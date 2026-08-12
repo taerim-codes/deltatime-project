@@ -11,17 +11,40 @@ export const CATS = [
   { id: 'essay', no: 'SHELF 06', name: '그 밖의 산문' },
 ];
 
-export const STORES = ['알라딘에서 구매', '교보문고에서 구매', '예스24에서 구매'];
+export const STORES = [
+  { label: '알라딘에서 구매', key: 'aladin' },
+  { label: '교보문고에서 구매', key: 'kyobo' },
+  { label: '예스24에서 구매', key: 'yes24' },
+];
 
-// 두께 = 물성. 키스 자렛 대형본 > 양장 > 반양장 > 시집
-export function spineH(b) {
-  if (b.t.includes('키스 자렛')) return 104;
-  if (b.cat === 'poem') return 58;
-  if (b.fm === '양장본') return 82;
-  return 70;
+export const coverSrc = b => b.coverHd || b.cover;
+
+export function bookW() {
+  return 680;
 }
 
-// 흰 표지는 순백 대신 종이색 배경으로
+// 680px = 책 높이 200mm 기준 3.4px/mm
+export function spineH(b) {
+  const pages = parseInt(b.pages);
+  if (pages) {
+    const boardsMm = b.fm === '양장본' ? 5 : 3;
+    const mm = boardsMm + pages * 0.062;
+    return Math.max(44, Math.min(124, Math.round(mm * 3.4)));
+  }
+  if (b.t.includes('키스 자렛')) return 96;
+  if (b.cat === 'poem') return 48;
+  if (b.fm === '양장본') return 78;
+  return 62;
+}
+
+// 공저는 "첫 저자 외", 역서는 원저자만
+export function spineAuthor(b) {
+  const parts = b.a.split('·').map(s => s.trim());
+  if (parts.length > 1 && !parts[parts.length - 1].endsWith('옮김')) return parts[0] + ' 외';
+  return parts[0];
+}
+
+// 순백 표지는 상세 배경을 종이색으로 치환
 export function pageBg(hex) {
   const n = parseInt(hex.slice(1), 16);
   const r = n >> 16, g = (n >> 8) & 255, b = n & 255;

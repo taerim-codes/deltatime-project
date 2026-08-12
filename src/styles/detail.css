@@ -1,4 +1,3 @@
-/* detail : 책의 색으로 물드는 페이지 */
 .detail{
   position:fixed;inset:0;z-index:20;display:none;overflow-y:auto;
   background:var(--dbg,#FBFAF7);color:var(--dfg,#161514);
@@ -6,6 +5,9 @@
 }
 body.detail-mode .detail{display:block;animation:dfade .5s ease}
 @keyframes dfade{from{opacity:0}to{opacity:1}}
+.detail.closing{display:block;animation:dfadeout .5s ease both}
+@keyframes dfadeout{from{opacity:1}to{opacity:0}}
+.stage{touch-action:none}
 .back{
   position:fixed;top:1.6rem;left:5vw;z-index:25;
   font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;color:inherit;
@@ -14,9 +16,13 @@ body.detail-mode .detail{display:block;animation:dfade .5s ease}
 .back:hover{opacity:.6}
 .detail-inner{
   min-height:100vh;display:grid;grid-template-columns:.95fr 1.05fr;
-  gap:5rem;align-items:center;padding:8rem 8vw 6rem;
+  gap:5rem;align-items:start;padding:0 8vw 6rem;
 }
-.stage{perspective:1900px;display:flex;justify-content:center;position:relative}
+.stage{
+  perspective:1900px;display:flex;justify-content:center;align-items:center;position:relative;
+  position:sticky;top:0;height:100vh;
+}
+.dbody{padding-top:8rem}
 .fwrap{animation:floatin 1s cubic-bezier(.22,.9,.3,1) both}
 @keyframes floatin{from{opacity:0;transform:translateY(46px)}to{opacity:1;transform:none}}
 .fbob{animation:bob 7s ease-in-out infinite}
@@ -70,6 +76,12 @@ body.detail-mode .detail{display:block;animation:dfade .5s ease}
 .asec .lab{display:flex;align-items:center;gap:1rem;font-family:var(--serif);font-style:italic;font-size:1rem}
 .asec .lab::before{content:"";width:44px;height:1px;background:currentColor;opacity:.7}
 .asec p{margin-top:1rem;font-size:.93rem}
+
+.toclist p{margin-top:.15rem;font-size:.88rem;font-weight:300;opacity:.85}
+.toclist .tgrp{font-family:var(--serif);font-size:.95rem;opacity:1;margin-top:1.3rem}
+.asec blockquote{margin-top:1.6rem}
+.asec blockquote p{font-family:var(--serif);font-size:.95rem;line-height:2;margin-top:0;white-space:pre-line}
+.asec blockquote cite{display:block;font-family:var(--mono);font-style:normal;font-size:.6rem;letter-spacing:.12em;opacity:.55;margin-top:.7rem}
 .dnav{display:flex;justify-content:space-between;max-width:34em;margin-top:3rem;font-family:var(--mono);font-size:.6rem;letter-spacing:.18em}
 .dnav button{opacity:.6;padding:.3rem 0}
 .dnav button:hover{opacity:1}
@@ -78,5 +90,7 @@ body.detail-mode .detail{display:block;animation:dfade .5s ease}
   .fwrap,.fbob{animation:none}
 }
 @media (max-width:860px){
-  .detail-inner{grid-template-columns:1fr;gap:5.5rem;padding-top:7rem;align-content:start}
+  .detail-inner{grid-template-columns:1fr;gap:0;align-content:start}
+  .stage{position:relative;height:60vh;top:auto;padding-top:4rem}
+  .dbody{padding-top:2rem}
 }

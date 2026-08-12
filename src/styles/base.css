@@ -28,6 +28,15 @@ header a{pointer-events:auto}
 .hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(1.6rem,3.8vw,2.6rem);line-height:1.7}
 .hero p{font-family:var(--mono);font-size:.6rem;letter-spacing:.3em;opacity:.45;margin-top:2.2rem}
 
+/* gl 모드에서 DOM 책은 레이아웃·포커스용 투명 플레이스홀더 */
+#glcanvas{position:fixed;inset:0;z-index:5;pointer-events:none}
+body.gl.detail-mode #glcanvas,
+body.gl:has(.detail.closing) #glcanvas{z-index:22}
+body.gl .pbook{opacity:1;transform:none;transition:none;filter:none}
+body.gl .pwrap{opacity:0}
+body.gl .detail .fwrap,
+body.gl .detail .bshadow{visibility:hidden}
+
 .chainline{padding:2rem 5vw 8rem;text-align:center;font-family:var(--mono);font-size:.6rem;letter-spacing:.26em;opacity:.4}
 footer{
   padding:3rem 5vw 4rem;border-top:1px solid rgba(255,255,255,.08);
