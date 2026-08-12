@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시간의흐름 — delta time</title>
+<meta name="description" content="시간의흐름은 2018년 서울에서 시작한 출판사입니다. 천천히 만든 책은, 읽는 사람의 시간을 바꿉니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="#">시간의흐름<span>DELTA TIME</span></a>
+  <span class="tag">SEOUL · SINCE 2018</span>
+</header>
+
+<section class="hero">
+  <h1>천천히 만든 책은,<br>읽는 사람의 시간을 바꿉니다.</h1>
+  <p>PUBLISHING HOUSE · SINCE 2018</p>
+</section>
+
+<div class="stack" id="stack"></div>
+
+<p class="chainline">커피 → 담배 → 영화 → 시 → 산책 → 연애 → 술 → 농담 → 그림자 → 새벽 → 음악</p>
+
+<footer>
+  <span>© 시간의흐름 DELTA TIME</span>
+  <a href="https://www.instagram.com/deltatime.co/" target="_blank" rel="noopener">INSTAGRAM @DELTATIME.CO</a>
+</footer>
+
+<section class="detail" id="detail" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+  <button class="back" id="backBtn">← 서가로 돌아가기</button>
+  <div class="detail-inner">
+    <div class="stage">
+      <div class="fwrap"><div class="fbob">
+        <div class="fbook">
+          <div class="f cover"><img id="dImg" alt=""></div>
+          <div class="f sp" id="dSp"><b id="dSpT"></b></div>
+          <div class="f pg"></div>
+          <div class="f bk"></div>
+        </div>
+      </div></div>
+      <div class="bshadow" aria-hidden="true"></div>
+    </div>
+    <div class="dbody">
+      <h1 id="dTitle"></h1>
+      <p class="author" id="dAuthor"></p>
+      <div class="rule"></div>
+      <div class="blurb" id="dBlurb"></div>
+      <p class="meta" id="dMeta"></p>
+      <div class="buyrows" id="dBuy"></div>
+      <div class="asec" id="dAsec" hidden>
+        <p class="lab">저자</p>
+        <p id="dBio"></p>
+      </div>
+      <div class="dnav">
+        <button id="prevBtn">← 이전 책</button>
+        <button id="nextBtn">다음 책 →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+:root{
+  --bg:#14110E; --ink:#161514; --paper:#FBFAF7; --smoke:#8A857D;
+  --serif:'Gowun Batang','Noto Serif KR',serif;
+  --sans:'Noto Sans KR',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);font-weight:300;line-height:1.8;letter-spacing:-0.01em;background:var(--bg);color:var(--paper)}
+body.detail-mode{overflow:hidden}
+::selection{background:var(--paper);color:var(--ink)}
+a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offset:4px;border-radius:2px}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;text-align:left}
+
+header{
+  position:fixed;top:0;left:0;right:0;z-index:10;
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:1.5rem 5vw;
+  background:linear-gradient(var(--bg) 40%,transparent);
+  pointer-events:none;
+}
+header a{pointer-events:auto}
+.wordmark{font-family:var(--serif);font-size:1.1rem;font-weight:700;letter-spacing:.06em;text-decoration:none;color:var(--paper)}
+.wordmark span{font-family:var(--mono);font-size:.6rem;font-weight:400;letter-spacing:.22em;opacity:.45;margin-left:.6rem}
+.tag{font-family:var(--mono);font-size:.58rem;letter-spacing:.26em;opacity:.45}
+
+.hero{padding:26vh 5vw 14vh;text-align:center}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(1.6rem,3.8vw,2.6rem);line-height:1.7}
+.hero p{font-family:var(--mono);font-size:.6rem;letter-spacing:.3em;opacity:.45;margin-top:2.2rem}
+
+.chainline{padding:2rem 5vw 8rem;text-align:center;font-family:var(--mono);font-size:.6rem;letter-spacing:.26em;opacity:.4}
+footer{
+  padding:3rem 5vw 4rem;border-top:1px solid rgba(255,255,255,.08);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;opacity:.55;
+}
+footer a{color:var(--paper);text-decoration:none}
