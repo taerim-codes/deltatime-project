@@ -124,8 +124,7 @@ export async function initGL() {
   const cv = renderer.domElement;
   cv.id = 'glcanvas';
   document.body.appendChild(cv);
-  const mobile = Math.min(innerWidth, innerHeight) <= 820;
-  renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(FOV, 1, 50, 40000);
@@ -328,7 +327,8 @@ export async function initGL() {
   }
 
   function detailScale(st, anchor) {
-    return Math.min(460, anchor.rect.height * 0.92, vh * 0.62) / st.w;
+    // vw 캡: 좁은 화면에서 상세 책이 화면을 삼키지 않게 (표지 폭 ≈ 높이의 0.65)
+    return Math.min(460, anchor.rect.height * 0.92, vh * 0.62, vw * 0.85) / st.w;
   }
 
   function resetDrag() {

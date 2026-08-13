@@ -3,8 +3,8 @@ import { spineAuthor } from '../data.js';
 
 // 모바일 GPU 메모리 보호: 텍스처 해상도·이방성 필터를 낮춘다
 const MOBILE = typeof window !== 'undefined' && Math.min(window.innerWidth, window.innerHeight) <= 820;
-const FACE_W = MOBILE ? 704 : 1280;
-const ANISO = MOBILE ? 4 : 16;
+const FACE_W = MOBILE ? 896 : 1280;
+const ANISO = MOBILE ? 8 : 16;
 
 function canvas(w, h) {
   const c = document.createElement('canvas');
