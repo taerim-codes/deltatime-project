@@ -5,10 +5,12 @@ import './styles/detail.css';
 import { renderStack } from './stack.js';
 import { initDetail, openBook, setPresenter } from './detail.js';
 import { initRelay } from './relay.js';
+import { initTimeDial } from './timedial.js';
 
 renderStack(openBook);
 initDetail();
 initRelay();
+initTimeDial();
 
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   import('./gl/glapp.js')

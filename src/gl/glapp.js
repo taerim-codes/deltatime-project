@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { BOOKS, CATS, bookW, spineH, coverSrc } from '../data.js';
+import { siteTime } from '../timedial.js';
 import { spineTex, coverFaceTex, pagesTex, backTex, shadowTex } from './textures.js';
 
 const DEPTH_RATIO = 284 / 436;
@@ -32,6 +33,36 @@ const lerp = (a, b, t) => a + (b - a) * t;
 const hexToRgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
 const mixRgb = (a, b, t) => a.map((v, i) => lerp(v, b[i], t));
 const cssRgb = c => `rgb(${c.map(Math.round).join(' ')})`;
+
+// 하루의 빛 — 앵커가 일출·일몰에 붙어 있어 계절 따라 새벽·석양이 이동한다
+function dayAt(hour, rise, set) {
+  const keys = [
+    { h: rise - 2.5, amb: 0.76, key: 0.90, tint: [8, 12, 24],  amt: 0.34 },
+    { h: rise + 0.4, amb: 0.92, key: 0.80, tint: [70, 78, 92], amt: 0.22 },
+    { h: rise + 2.8, amb: 1.05, key: 1.00, tint: [0, 0, 0],    amt: 0 },
+    { h: set - 2.5,  amb: 1.05, key: 1.00, tint: [0, 0, 0],    amt: 0 },
+    { h: set - 0.2,  amb: 0.98, key: 1.12, tint: [66, 42, 18], amt: 0.24 },
+    { h: set + 1.8,  amb: 0.88, key: 1.00, tint: [16, 16, 30], amt: 0.24 },
+    { h: set + 4.0,  amb: 0.80, key: 0.95, tint: [10, 14, 26], amt: 0.30 },
+  ];
+  let h = hour;
+  while (h < keys[0].h) h += 24;
+  let a = keys[keys.length - 1], b = { ...keys[0], h: keys[0].h + 24 };
+  for (let i = 0; i < keys.length - 1; i++) {
+    if (h >= keys[i].h && h <= keys[i + 1].h) {
+      a = keys[i];
+      b = keys[i + 1];
+      break;
+    }
+  }
+  const t = b.h === a.h ? 0 : Math.min(1, Math.max(0, (h - a.h) / (b.h - a.h)));
+  return {
+    amb: lerp(a.amb, b.amb, t),
+    key: lerp(a.key, b.key, t),
+    tint: mixRgb(a.tint, b.tint, t),
+    amt: lerp(a.amt, b.amt, t),
+  };
+}
 
 function shelfMoodTargets() {
   const white = new THREE.Color('#ffffff');
@@ -100,6 +131,38 @@ export async function initGL() {
   const key = new THREE.DirectionalLight(0xffffff, BASE_KEY);
   key.position.set(-350, 900, 1000);
   scene.add(ambient, key);
+
+  const sky = document.createElement('div');
+  sky.className = 'sky';
+  sky.setAttribute('aria-hidden', 'true');
+  sky.innerHTML = '<i class="sun"></i><i class="moon"></i>';
+  document.body.appendChild(sky);
+  const sun = sky.querySelector('.sun');
+  const moon = sky.querySelector('.moon');
+
+  // t: 궤도 진행률(0~1) → 좌하단에서 떠서 정점 찍고 우하단으로.
+  // 지평선 근처에서는 커 보인다 (달오름 착시)
+  function placeBody(el, t, peak) {
+    if (t <= 0 || t >= 1) {
+      el.style.opacity = '0';
+      return;
+    }
+    const arc = Math.sin(Math.PI * t);
+    const x = lerp(0.1, 0.9, t) * vw;
+    const y = vh * 0.78 - arc * vh * (0.78 - peak);
+    const scale = 1 + (1 - arc) * 0.22;
+    el.style.opacity = (arc ** 0.6 * 0.9).toFixed(3);
+    el.style.transform =
+      `translate(${x.toFixed(0)}px, ${y.toFixed(0)}px) translate(-50%,-50%) scale(${scale.toFixed(3)})`;
+  }
+
+  function updateSky(hour) {
+    const { rise, set } = siteTime;
+    const dayLen = set - rise;
+    const sunPeak = lerp(0.24, 0.12, (dayLen - 9.5) / 5.3); // 여름 해는 높고 겨울 해는 낮다
+    placeBody(sun, (hour - rise) / dayLen, sunPeak);
+    placeBody(moon, ((hour - set + 24) % 24) / (24 - dayLen), 0.14);
+  }
 
   const moods = shelfMoodTargets();
   const mood = {
@@ -404,12 +467,14 @@ export async function initGL() {
 
   function updateMood(dt) {
     const target = moodTargetAt(scrollY + vh / 2);
+    const day = dayAt(siteTime.hour, siteTime.rise, siteTime.set);
+    updateSky(siteTime.hour);
     const k = Math.min(1, dt * 3.5);
-    mood.bg = mixRgb(mood.bg, target.bg, k);
+    mood.bg = mixRgb(mood.bg, mixRgb(target.bg, day.tint, day.amt), k);
     mood.keyColor.lerp(target.keyColor, k);
     mood.ambColor.lerp(target.ambColor, k);
-    mood.amb = lerp(mood.amb, target.amb, k);
-    mood.key = lerp(mood.key, target.key, k);
+    mood.amb = lerp(mood.amb, target.amb * day.amb, k);
+    mood.key = lerp(mood.key, target.key * day.key, k);
     ambient.color.copy(mood.ambColor);
     ambient.intensity = mood.amb;
     key.color.copy(mood.keyColor);
