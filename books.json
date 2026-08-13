@@ -581,7 +581,17 @@
       "2부는 글쓰기의 본질을 탐구하는 시론의 성격을 띤다. 시인은 고통과 상처에서 출발하는 글쓰기의 필연성을 이야기하며, 어느 결엔가 삶 쪽으로 바짝 붙어 있는 자신을 발견하게 된다고 쓴다."
     ],
     "extra": "240쪽 · 120*200mm · ISBN 9791190999175",
-    "coverHd": "assets/covers-hd/10-dawn-music.jpg"
+    "coverHd": "assets/covers-hd/10-dawn-music.jpg",
+    "listen": [
+      {
+        "label": "새벽 낚시를 위한 Playlist",
+        "url": "https://youtube.com/playlist?list=PLZBSsp5eRJ1TUffXXNUpiUjF7Z8GUKY1U"
+      },
+      {
+        "label": "불면의 밤을 위한 Playlist",
+        "url": "https://youtube.com/playlist?list=PLZBSsp5eRJ1TXThnxhK-pOsY7yHnE1Wi6"
+      }
+    ]
   },
   {
     "cat": "poem",
@@ -1268,7 +1278,13 @@
       "악보라는 기호는 너무나 성글어서 연주자는 온갖 상상력을 발휘하여 악보의 빈 곳을 채우며 최종적인 소리를 만들어야만 한다. 연주자의 모든 사사로운 결정이 소리에 투영된다는 뜻이다. (중략) 작곡가의 의도를 파악하고 내가 좋아하는 도구로 어떻게 표현할지를 궁리하는 시간. 주어진 모든 재료를 늘어놓고 가장 어울리는 조합을 찾는 시간. 안타깝게도 그 재료 들은 눈으로 볼 수 없다. 악보에 쓰여 있지도 않다. 그것은 소리의 강도나 소리와 소 리의 연결이 될 수도 있고, 때로는 소리의 색채가 되기도 한다. 이 무수한 선택지를 팔레트 위에 펼쳐놓으면, 근본적인 고민이 시작된다. 나는 무엇을 표현하고 싶은가? 내가 원하는 것은 무엇인가? _본문 중에서"
     ],
     "extra": "232쪽 · 120×200mm · ISBN 9791190999045",
-    "coverHd": "assets/covers-hd/snd-language-of-music.jpg"
+    "coverHd": "assets/covers-hd/snd-language-of-music.jpg",
+    "listen": [
+      {
+        "label": "음악의 언어 Playlist",
+        "url": "https://youtube.com/playlist?list=PLZBSsp5eRJ1QasYzAQgEY-82PM_4mZjAh"
+      }
+    ]
   },
   {
     "cat": "sound",

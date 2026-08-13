@@ -6,7 +6,7 @@ const SUN_TABLE = [
   [6.25, 18.67], [6.67, 17.92], [7.17, 17.33], [7.67, 17.25],
 ];
 
-export const siteTime = { hour: 12, month: 8, rise: 5.83, set: 19.42, live: true };
+export const siteTime = { hour: 12, month: 8, day: 1, rise: 5.83, set: 19.42, live: true };
 
 function applyMonth() {
   const [rise, set] = SUN_TABLE[siteTime.month - 1];
@@ -18,6 +18,7 @@ function syncToNow() {
   const now = new Date();
   siteTime.hour = now.getHours() + now.getMinutes() / 60;
   siteTime.month = now.getMonth() + 1;
+  siteTime.day = now.getDate();
   applyMonth();
 }
 
@@ -60,7 +61,8 @@ export function initTimeDial() {
     <div class="td-col">
       <div class="calleaf" title="위아래로 넘겨서 계절을 바꿔보세요">
         <span class="holes"><i></i><i></i></span>
-        <b class="mnum"></b><span class="mword">월</span>
+        <span class="mword"></span>
+        <b class="dnum"></b>
       </div>
     </div>
     <p class="tword"></p>
@@ -70,14 +72,16 @@ export function initTimeDial() {
   const leaf = root.querySelector('.calleaf');
   const clockHand = clock.querySelector('.hand');
   const tread = root.querySelector('.tread');
-  const mnum = root.querySelector('.mnum');
+  const mword = root.querySelector('.mword');
+  const dnum = root.querySelector('.dnum');
   const tword = root.querySelector('.tword');
   const sunread = root.querySelector('.sunread');
 
   function render() {
     clockHand.style.transform = `translateX(-50%) rotate(${(siteTime.hour / 24 * 360 + 180).toFixed(1)}deg)`;
     tread.textContent = fmt(siteTime.hour);
-    mnum.textContent = siteTime.month;
+    mword.textContent = siteTime.month + '월';
+    dnum.textContent = siteTime.day;
     tword.textContent = `${SEASON_WORDS[siteTime.month - 1]}의 ${timeWord(siteTime.hour, siteTime.rise, siteTime.set)}`;
     sunread.textContent = `일출 ${fmt(siteTime.rise)} · 일몰 ${fmt(siteTime.set)}`;
   }
@@ -98,6 +102,7 @@ export function initTimeDial() {
     if (to - from > 12) to -= 24;
     if (from - to > 12) to += 24;
     siteTime.month = now.getMonth() + 1;
+    siteTime.day = now.getDate();
     applyMonth();
     const t0 = performance.now();
     const dur = 1800;

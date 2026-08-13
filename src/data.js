@@ -17,7 +17,10 @@ export const MODE_BY_CAT = Object.fromEntries(CATS.map(c => [c.id, c.mode]));
 // 서 있는 책의 화면 스케일 (책 길이 680px 기준) — 눕힌 책과 존재감을 맞춘다
 export const STAND_SCALE = { shelf: 0.88, display: 0.66 };
 
+export const SMARTSTORE = 'https://smartstore.naver.com/denker251';
+
 export const STORES = [
+  { label: '스마트스토어에서 구매', key: 'store' }, // 출판사 직영이 첫 줄
   { label: '알라딘에서 구매', key: 'aladin' },
   { label: '교보문고에서 구매', key: 'kyobo' },
   { label: '예스24에서 구매', key: 'yes24' },

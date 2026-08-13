@@ -85,4 +85,19 @@ export function renderStack(onOpen) {
     const btn = e.target.closest('.pbook');
     if (btn) onOpen(+btn.dataset.i);
   });
+
+  renderTicker(onOpen);
+}
+
+// 전체 서가가 흘러가는 컨베이어 — 호버로 멈추고, 누르면 그 책이 열린다
+function renderTicker(onOpen) {
+  const track = document.querySelector('#ticker .track');
+  if (!track) return;
+  const items = BOOKS.map((b, i) =>
+    `<button data-i="${i}">${b.t}<i>${spineAuthor(b)}</i></button>`).join('');
+  track.innerHTML = items + items;
+  track.parentElement.addEventListener('click', e => {
+    const btn = e.target.closest('button');
+    if (btn) onOpen(+btn.dataset.i);
+  });
 }

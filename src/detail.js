@@ -1,4 +1,4 @@
-import { BOOKS, STORES, pageBg, coverSrc } from './data.js';
+import { BOOKS, STORES, SMARTSTORE, pageBg, coverSrc } from './data.js';
 
 let current = 0;
 let presenter = null;
@@ -25,7 +25,7 @@ function fillDOM(b) {
   el('dMeta').textContent =
     `${b.s} · 시간의흐름 · ${b.d} · ${b.fm} · ${b.extra ? b.extra + ' · ' : ''}정가 ${b.p}`;
   el('dBuy').innerHTML = STORES.map(s => {
-    const url = b[s.key];
+    const url = s.key === 'store' ? (b.store || SMARTSTORE) : b[s.key];
     return `<a href="${url || '#'}"${url ? ' target="_blank" rel="noopener"' : ''}>${s.label} <span class="pr">${b.p}</span> <span class="ar">↗</span></a>`;
   }).join('');
 
@@ -37,6 +37,10 @@ function fillDOM(b) {
     : '');
   fillSection('dReview', 'dReviewList', b.review?.length
     ? b.review.map(p => `<p>${p}</p>`).join('')
+    : '');
+  fillSection('dListen', 'dListenList', b.listen?.length
+    ? b.listen.map(l =>
+      `<p><a href="${l.url}" target="_blank" rel="noopener">${l.label} <span class="ar">↗</span></a></p>`).join('')
     : '');
 
   el('dAsec').hidden = !b.bio;

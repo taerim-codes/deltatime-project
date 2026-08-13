@@ -82,6 +82,9 @@ body.detail-mode .detail{display:block;animation:dfade .5s ease}
 .asec blockquote{margin-top:1.6rem}
 .asec blockquote p{font-family:var(--serif);font-size:.95rem;line-height:2;margin-top:0;white-space:pre-line}
 .asec blockquote cite{display:block;font-family:var(--mono);font-style:normal;font-size:.6rem;letter-spacing:.12em;opacity:.55;margin-top:.7rem}
+.asec a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px}
+.asec a:hover{opacity:.6}
+.asec a .ar{font-family:var(--mono);font-size:.8em}
 .dnav{display:flex;justify-content:space-between;max-width:34em;margin-top:3rem;font-family:var(--mono);font-size:.6rem;letter-spacing:.18em}
 .dnav button{opacity:.6;padding:.3rem 0}
 .dnav button:hover{opacity:1}
