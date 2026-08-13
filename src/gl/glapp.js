@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { BOOKS, bookW, spineH, coverSrc } from '../data.js';
+import { BOOKS, CATS, bookW, spineH, coverSrc } from '../data.js';
 import { spineTex, coverFaceTex, pagesTex, backTex, shadowTex } from './textures.js';
 
 const DEPTH_RATIO = 284 / 436;
@@ -10,8 +10,47 @@ const HOVER_LIFT = 12;
 const FLIGHT = { open: 950, close: 850, swap: 420, openArc: 160, closeArc: 140 };
 const DRAG = { yaw: 0.0072, pitch: 0.005, pitchMax: 0.55, spring: 9, damping: 3.2 };
 
+const BASE_AMBIENT = 2.35;
+const BASE_KEY = 1.1;
+const BASE_BG = '#14110E';
+const MOOD_BLEND_PX = 280;
+
+// 서가별 공기: 색은 그 서가 책등에서 나오고, 여기서는 조명의 성격만 정한다
+const SHELF_MOODS = {
+  flow:  { amb: 1.0,  key: 1.0,  bgMix: 0.10 },
+  poem:  { amb: 1.05, key: 0.8,  bgMix: 0.10 }, // 새벽 — 평평하고 차가운 빛
+  fict:  { amb: 0.95, key: 1.05, bgMix: 0.10 },
+  sound: { amb: 0.7,  key: 1.6,  bgMix: 0.14 }, // 재즈바 — 어둡고 극적인 키라이트
+  cafe:  { amb: 1.1,  key: 0.9,  bgMix: 0.2 },  // 오후의 카페 — 밝고 부드러운 웜톤
+  essay: { amb: 1.0,  key: 1.0,  bgMix: 0.08 },
+};
+
 const easeInOut = k => (k < 0.5 ? 4 * k ** 3 : 1 - (-2 * k + 2) ** 3 / 2);
 const lerp = (a, b, t) => a + (b - a) * t;
+
+// 배경은 sRGB에서 직접 섞는다 — THREE.Color(리니어 작업공간)로 섞으면 감각보다 밝아진다
+const hexToRgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+const mixRgb = (a, b, t) => a.map((v, i) => lerp(v, b[i], t));
+const cssRgb = c => `rgb(${c.map(Math.round).join(' ')})`;
+
+function shelfMoodTargets() {
+  const white = new THREE.Color('#ffffff');
+  const baseBg = hexToRgb(BASE_BG);
+  return CATS.map(cat => {
+    const spines = BOOKS.filter(b => b.cat === cat.id).map(b => b.spine);
+    const avgRgb = spines.map(hexToRgb)
+      .reduce((acc, c) => acc.map((v, i) => v + c[i] / spines.length), [0, 0, 0]);
+    const avgLinear = new THREE.Color(`rgb(${avgRgb.map(Math.round).join(',')})`);
+    const m = SHELF_MOODS[cat.id];
+    return {
+      bg: mixRgb(baseBg, avgRgb, m.bgMix),
+      keyColor: white.clone().lerp(avgLinear, 0.18),
+      ambColor: white.clone().lerp(avgLinear, 0.08),
+      amb: BASE_AMBIENT * m.amb,
+      key: BASE_KEY * m.key,
+    };
+  });
+}
 
 function standQuaternion() {
   const basis = new THREE.Matrix4().makeBasis(
@@ -57,10 +96,20 @@ export async function initGL() {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(FOV, 1, 50, 40000);
   // 램버트는 조도/π — 정면 합이 1.0 근처가 되는 값
-  scene.add(new THREE.AmbientLight(0xffffff, 2.35));
-  const key = new THREE.DirectionalLight(0xffffff, 1.1);
+  const ambient = new THREE.AmbientLight(0xffffff, BASE_AMBIENT);
+  const key = new THREE.DirectionalLight(0xffffff, BASE_KEY);
   key.position.set(-350, 900, 1000);
-  scene.add(key);
+  scene.add(ambient, key);
+
+  const moods = shelfMoodTargets();
+  const mood = {
+    bg: hexToRgb(BASE_BG),
+    keyColor: new THREE.Color('#ffffff'),
+    ambColor: new THREE.Color('#ffffff'),
+    amb: BASE_AMBIENT,
+    key: BASE_KEY,
+  };
+  let moodStops = [];
 
   const sharedShadowTex = shadowTex();
   const sharedBackTex = backTex();
@@ -99,6 +148,21 @@ export async function initGL() {
     };
   });
 
+  // 첫 렌더에서 전체 텍스처가 한꺼번에 GPU로 올라가며 얼어붙는 것을 방지 —
+  // 초기화 단계에서 몇 장씩 나눠 선업로드한다
+  async function warmupTextures() {
+    const maps = new Set();
+    for (const st of books) for (const m of st.mats) if (m.map) maps.add(m.map);
+    const list = [...maps];
+    for (let i = 0; i < list.length; i += 4) {
+      list.slice(i, i + 4).forEach(tx => renderer.initTexture(tx));
+      // 숨김 탭은 타이머가 분 단위로 스로틀되므로 대기 없이 동기 업로드
+      if (!document.hidden) await new Promise(r => setTimeout(r, 16));
+    }
+    renderer.compile(scene, camera);
+  }
+  await warmupTextures();
+
   function shadowToStack(st) {
     st.shadow.position.set(0, -st.th / 2 - 40, -st.d / 2 - 40);
     st.shadow.scale.set(st.w * 1.12, Math.max(120, st.th * 2.6), 1);
@@ -115,9 +179,13 @@ export async function initGL() {
     document.querySelectorAll('.pbook').forEach(btn => {
       const st = books[+btn.dataset.i];
       const r = btn.getBoundingClientRect();
-      st.top = r.top + scrollY;
+      st.top = btn.offsetTop; // transform(리빌 트랜지션) 영향 없는 레이아웃 좌표
       st.x = r.left + r.width / 2 - vw / 2;
     });
+    moodStops = [...document.querySelectorAll('.grp')].map((g, i) => ({
+      y: g.getBoundingClientRect().top + scrollY,
+      target: moods[i],
+    }));
   }
 
   function resize() {
@@ -314,6 +382,41 @@ export async function initGL() {
     document.body.style.cursor = '';
   });
 
+  const moodMix = { bg: [0, 0, 0], keyColor: new THREE.Color(), ambColor: new THREE.Color(), amb: 0, key: 0 };
+
+  function moodTargetAt(centerY) {
+    if (!moodStops.length || centerY < moodStops[0].y) return moods[0];
+    let a = moods[0], b = moods[0], t = 0;
+    for (let i = 0; i < moodStops.length; i++) {
+      if (centerY < moodStops[i].y) break;
+      a = moodStops[i].target;
+      const next = moodStops[i + 1];
+      b = next ? next.target : a;
+      t = next ? THREE.MathUtils.smoothstep(centerY, next.y - MOOD_BLEND_PX, next.y) : 0;
+    }
+    moodMix.bg = mixRgb(a.bg, b.bg, t);
+    moodMix.keyColor.lerpColors(a.keyColor, b.keyColor, t);
+    moodMix.ambColor.lerpColors(a.ambColor, b.ambColor, t);
+    moodMix.amb = lerp(a.amb, b.amb, t);
+    moodMix.key = lerp(a.key, b.key, t);
+    return moodMix;
+  }
+
+  function updateMood(dt) {
+    const target = moodTargetAt(scrollY + vh / 2);
+    const k = Math.min(1, dt * 3.5);
+    mood.bg = mixRgb(mood.bg, target.bg, k);
+    mood.keyColor.lerp(target.keyColor, k);
+    mood.ambColor.lerp(target.ambColor, k);
+    mood.amb = lerp(mood.amb, target.amb, k);
+    mood.key = lerp(mood.key, target.key, k);
+    ambient.color.copy(mood.ambColor);
+    ambient.intensity = mood.amb;
+    key.color.copy(mood.keyColor);
+    key.intensity = mood.key;
+    document.documentElement.style.setProperty('--bg', cssRgb(mood.bg));
+  }
+
   let last = performance.now();
   const qDrag = new THREE.Quaternion();
   const eDrag = new THREE.Euler();
@@ -330,6 +433,8 @@ export async function initGL() {
         o.done?.();
       }
     }
+
+    updateMood(dt);
 
     const sy = scrollY;
     for (const st of books) {

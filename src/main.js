@@ -4,9 +4,11 @@ import './styles/detail.css';
 
 import { renderStack } from './stack.js';
 import { initDetail, openBook, setPresenter } from './detail.js';
+import { initRelay } from './relay.js';
 
 renderStack(openBook);
 initDetail();
+initRelay();
 
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   import('./gl/glapp.js')

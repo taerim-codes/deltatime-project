@@ -2,6 +2,19 @@
 .grp{font-family:var(--mono);font-size:.6rem;letter-spacing:.34em;opacity:.4;margin:9rem 0 7rem;text-align:center}
 .grp:first-child{margin-top:0}
 .grp em{font-style:normal;display:block;font-family:var(--serif);font-size:1.05rem;letter-spacing:.14em;opacity:.9;margin-top:.5rem}
+.relay-layer{position:fixed;inset:0;z-index:6;pointer-events:none}
+.relay{
+  position:fixed;left:50%;top:0;opacity:0;
+  font-family:var(--serif);font-size:1.6rem;letter-spacing:.22em;
+  color:var(--paper);will-change:transform,opacity;
+  text-shadow:0 0 24px rgba(0,0,0,.55);
+}
+.relay-thread{
+  position:fixed;left:50%;top:0;width:1px;height:0;opacity:0;
+  background:linear-gradient(to bottom, transparent, var(--paper) 30%, var(--paper) 70%, transparent);
+  will-change:transform,opacity,height;
+}
+body.detail-mode .relay-layer{display:none}
 
 .pbook{
   width:min(var(--bw,680px),88vw);margin-bottom:7.5rem;
