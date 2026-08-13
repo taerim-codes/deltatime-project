@@ -89,6 +89,16 @@ body.gl .pwrap{opacity:0}
 body.gl .detail .fwrap,
 body.gl .detail .bshadow{visibility:hidden}
 
+/* 소식 — 인스타에만 올리던 것들이 자리를 갖는다 */
+.news{padding:2rem 5vw 6rem;display:flex;flex-direction:column;align-items:center}
+.news .grp{margin:0 0 2.6rem}
+.news ul{list-style:none;display:flex;flex-direction:column;gap:1.2rem;align-items:center}
+.news li{display:flex;gap:1.4rem;align-items:baseline;font-size:.98rem}
+.news li i{font-family:var(--mono);font-style:normal;font-size:.6rem;letter-spacing:.14em;opacity:.5}
+.news a,.news li span{color:var(--paper);text-decoration:none;font-family:var(--serif);letter-spacing:.04em;opacity:.85}
+.news a:hover{opacity:1}
+.news .ar{font-family:var(--mono);font-size:.7em;opacity:.6}
+
 .ticker{overflow:hidden;padding:2.5rem 0 7rem}
 .ticker .track{display:flex;width:max-content;animation:tickflow 110s linear infinite}
 .ticker:hover .track{animation-play-state:paused}

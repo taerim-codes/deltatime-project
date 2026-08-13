@@ -272,7 +272,7 @@ export async function initGL() {
       st.cy = top + r.height / 2;
       st.x = r.left + r.width / 2 - vw / 2;
     });
-    moodStops = [...document.querySelectorAll('.grp')].map((g, i) => ({
+    moodStops = [...document.querySelectorAll('#stack .grp')].map((g, i) => ({
       y: g.getBoundingClientRect().top + scrollY,
       target: moods[i],
     }));

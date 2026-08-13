@@ -1,7 +1,11 @@
 .stack{display:flex;flex-direction:column;align-items:center;padding:0 5vw 6rem}
-.grp{font-family:var(--mono);font-size:.7rem;letter-spacing:.34em;opacity:.62;margin:9rem 0 7rem;text-align:center}
+.grp{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.34em;opacity:.72;
+  margin:9rem 0 7rem;text-align:center;color:var(--paper);
+  text-shadow:0 1px 18px rgba(0,0,0,.6);
+}
 .grp:first-child{margin-top:0}
-.grp em{font-style:normal;display:block;font-family:var(--serif);font-size:1.5rem;letter-spacing:.16em;opacity:1;margin-top:.7rem}
+.grp em{font-style:normal;display:block;font-family:var(--serif);font-size:1.6rem;letter-spacing:.16em;opacity:1;margin-top:.7rem}
 .relay-layer{position:fixed;inset:0;z-index:6;pointer-events:none}
 .relay{
   position:fixed;left:50%;top:0;opacity:0;
