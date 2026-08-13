@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { BOOKS, CATS, bookW, spineH, coverSrc } from '../data.js';
+import { BOOKS, CATS, MODE_BY_CAT, STAND_SCALE, bookW, spineH, coverSrc } from '../data.js';
 import { siteTime } from '../timedial.js';
-import { spineTex, coverFaceTex, pagesTex, backTex, shadowTex } from './textures.js';
+import { spineTex, spineVTex, coverFaceTex, pagesTex, backTex, shadowTex } from './textures.js';
 
 const DEPTH_RATIO = 284 / 436;
 const FOV = 15;
@@ -177,21 +177,34 @@ export async function initGL() {
   const sharedShadowTex = shadowTex();
   const sharedBackTex = backTex();
 
+  // 모드별 안착 자세: 눕기 / 책등 정면으로 세우기(머리 위) / 표지 정면으로 똑바로 세우기
+  const qStackRest = new THREE.Quaternion().setFromEuler(new THREE.Euler(STACK_TILT, 0, 0));
+  const qShelfRest = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 0, -Math.PI / 2));
+  const qDisplayRest = new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(
+    new THREE.Vector3(0, -1, 0),
+    new THREE.Vector3(0, 0, 1),
+    new THREE.Vector3(-1, 0, 0),
+  ));
+
   const books = BOOKS.map((b, i) => {
     const w = bookW(b), th = spineH(b), d = Math.round(w * DEPTH_RATIO);
+    const mode = MODE_BY_CAT[b.cat];
     const material = map => new THREE.MeshLambertMaterial({ map, transparent: true, opacity: 0 });
     const mats = [
       material(pagesTex(d / 90, th / 30)),
       material(pagesTex(d / 90, th / 30)),
       material(coverFaceTex(imgs[i], b, 3)), // 표지 머리가 왼쪽으로 눕는다 — 세우면 바로 선다
       material(sharedBackTex),
-      material(spineTex(b, w, th)),
+      material(mode === 'shelf' ? spineVTex(b, w, th) : spineTex(b, w, th)),
       material(pagesTex(w / 90, th / 30)),
     ];
-    mats[2].color.setScalar(COVER_TINT);
+    mats[2].color.setScalar(mode === 'display' ? 1 : COVER_TINT);
+
+    const restQuat = mode === 'shelf' ? qShelfRest : mode === 'display' ? qDisplayRest : qStackRest;
+    const restScale = STAND_SCALE[mode] ?? 1;
 
     const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, th, d), mats);
-    mesh.rotation.x = STACK_TILT;
+    mesh.quaternion.copy(restQuat);
 
     const shadow = new THREE.Mesh(
       new THREE.PlaneGeometry(1, 1),
@@ -199,13 +212,14 @@ export async function initGL() {
     );
 
     const group = new THREE.Group();
+    group.scale.setScalar(restScale);
     group.add(mesh, shadow);
     group.visible = false;
     scene.add(group);
 
     return {
-      b, i, w, th, d, group, mesh, mats, shadow,
-      top: 0, x: 0,
+      b, i, w, th, d, mode, restQuat, restScale, group, mesh, mats, shadow,
+      cy: 0, x: 0,
       intro: 0, introT: 0, fade: 1, fadeT: 1, lift: 0, liftT: 0,
       detached: false,
     };
@@ -226,15 +240,24 @@ export async function initGL() {
   }
   await warmupTextures();
 
-  function shadowToStack(st) {
-    st.shadow.position.set(0, -st.th / 2 - 40, -st.d / 2 - 40);
-    st.shadow.scale.set(st.w * 1.12, Math.max(120, st.th * 2.6), 1);
+  // 그림자는 그룹 스케일을 같이 타므로 로컬 좌표로 배치
+  function shadowToRest(st) {
+    if (st.mode === 'shelf') {
+      st.shadow.position.set(0, -st.w / 2 - 30, -st.th / 2 - 30);
+      st.shadow.scale.set(st.th * 2.2, 110, 1);
+    } else if (st.mode === 'display') {
+      st.shadow.position.set(0, -st.w / 2 - 40, -st.th / 2 - 30);
+      st.shadow.scale.set(st.d * 1.05, 120, 1);
+    } else {
+      st.shadow.position.set(0, -st.th / 2 - 40, -st.d / 2 - 40);
+      st.shadow.scale.set(st.w * 1.12, Math.max(120, st.th * 2.6), 1);
+    }
   }
   function shadowToDetail(st) {
     st.shadow.position.set(0, -st.w / 2 - 70, -st.th / 2 - 40);
     st.shadow.scale.set(st.d * 1.1, 130, 1);
   }
-  books.forEach(shadowToStack);
+  books.forEach(shadowToRest);
 
   let vw = 0, vh = 0;
 
@@ -242,7 +265,11 @@ export async function initGL() {
     document.querySelectorAll('.pbook').forEach(btn => {
       const st = books[+btn.dataset.i];
       const r = btn.getBoundingClientRect();
-      st.top = btn.offsetTop; // transform(리빌 트랜지션) 영향 없는 레이아웃 좌표
+      // offsetTop: transform(리빌 트랜지션) 영향 없는 레이아웃 좌표.
+      // srow 안의 버튼은 offsetParent가 다를 수 있어 문서 기준으로 누적한다
+      let top = 0;
+      for (let el = btn; el; el = el.offsetParent) top += el.offsetTop;
+      st.cy = top + r.height / 2;
       st.x = r.left + r.width / 2 - vw / 2;
     });
     moodStops = [...document.querySelectorAll('.grp')].map((g, i) => ({
@@ -274,7 +301,6 @@ export async function initGL() {
   });
 
   const qStand = standQuaternion();
-  const qFlat = new THREE.Quaternion().setFromEuler(new THREE.Euler(STACK_TILT, 0, 0));
 
   let mode = 'stack';
   let active = null;
@@ -288,9 +314,8 @@ export async function initGL() {
     tweens.add(o);
   }
 
-  function stackPos(st) {
-    const cy = st.top - scrollY + st.th / 2;
-    return new THREE.Vector3(st.x, vh / 2 - cy, 0);
+  function restPos(st) {
+    return new THREE.Vector3(st.x, vh / 2 - (st.cy - scrollY), 0);
   }
 
   function detailAnchor() {
@@ -313,7 +338,7 @@ export async function initGL() {
     flying = true;
     st.detached = true;
     st.intro = st.introT = 1;
-    st.group.position.copy(stackPos(st));
+    st.group.position.copy(restPos(st));
     books.forEach(o => { if (o !== st) o.fadeT = 0; });
 
     const a = detailAnchor();
@@ -321,6 +346,7 @@ export async function initGL() {
     const q0 = st.mesh.quaternion.clone();
     const p0 = st.group.position.clone();
     const s0 = st.group.scale.x;
+    const c0 = st.mats[2].color.r;
     shadowToDetail(st);
 
     tween({
@@ -330,7 +356,7 @@ export async function initGL() {
         st.group.position.set(lerp(p0.x, a.x, e), lerp(p0.y, a.y, e), Math.sin(e * Math.PI) * FLIGHT.openArc);
         st.mesh.quaternion.slerpQuaternions(q0, qStand, e);
         st.group.scale.setScalar(lerp(s0, s, e));
-        st.mats[2].color.setScalar(lerp(COVER_TINT, 1, e));
+        st.mats[2].color.setScalar(lerp(c0, 1, e));
       },
       done: () => {
         flying = false;
@@ -347,21 +373,22 @@ export async function initGL() {
     const q0 = st.mesh.quaternion.clone();
     const p0 = st.group.position.clone();
     const s0 = st.group.scale.x;
+    const cEnd = st.mode === 'display' ? 1 : COVER_TINT;
 
     tween({
       dur: FLIGHT.close,
       ease: easeInOut,
       update: e => {
-        const pt = stackPos(st);
+        const pt = restPos(st);
         st.group.position.set(lerp(p0.x, pt.x, e), lerp(p0.y, pt.y, e), Math.sin(e * Math.PI) * FLIGHT.closeArc);
-        st.mesh.quaternion.slerpQuaternions(q0, qFlat, e);
-        st.group.scale.setScalar(lerp(s0, 1, e));
-        st.mats[2].color.setScalar(lerp(1, COVER_TINT, e));
+        st.mesh.quaternion.slerpQuaternions(q0, st.restQuat, e);
+        st.group.scale.setScalar(lerp(s0, st.restScale, e));
+        st.mats[2].color.setScalar(lerp(1, cEnd, e));
       },
       done: () => {
         st.detached = false;
         flying = false;
-        shadowToStack(st);
+        shadowToRest(st);
         books.forEach(o => { o.fadeT = 1; });
         mode = 'stack';
         active = null;
@@ -380,10 +407,10 @@ export async function initGL() {
     if (prev) {
       prev.detached = false;
       prev.fadeT = prev.fade = 0;
-      prev.mats[2].color.setScalar(COVER_TINT);
-      prev.mesh.quaternion.copy(qFlat);
-      prev.group.scale.setScalar(1);
-      shadowToStack(prev);
+      prev.mats[2].color.setScalar(prev.mode === 'display' ? 1 : COVER_TINT);
+      prev.mesh.quaternion.copy(prev.restQuat);
+      prev.group.scale.setScalar(prev.restScale);
+      shadowToRest(prev);
     }
     active = st;
     flying = true;
@@ -485,6 +512,8 @@ export async function initGL() {
   let last = performance.now();
   const qDrag = new THREE.Quaternion();
   const eDrag = new THREE.Euler();
+  const qTip = new THREE.Quaternion();
+  const eTip = new THREE.Euler();
 
   function frame(t) {
     const dt = Math.min(0.05, (t - last) / 1000);
@@ -503,7 +532,7 @@ export async function initGL() {
 
     const sy = scrollY;
     for (const st of books) {
-      const cy = st.top - sy + st.th / 2;
+      const cy = st.cy - sy;
       if (cy < vh * 0.92) st.introT = 1;
 
       st.intro += (st.introT - st.intro) * Math.min(1, dt * 4.2);
@@ -511,7 +540,17 @@ export async function initGL() {
       st.lift += (st.liftT - st.lift) * Math.min(1, dt * 11);
 
       if (!st.detached) {
-        st.group.position.set(st.x, vh / 2 - cy + st.lift - (1 - st.intro) * 44, 0);
+        // 호버: 눕힌 책은 떠오르고, 꽂힌 책은 밑단을 축으로 앞으로 빼꼼 기운다
+        let liftY = st.lift, liftZ = 0;
+        if (st.mode === 'shelf') {
+          const tip = (st.lift / HOVER_LIFT) * 0.3;
+          const half = (st.w / 2) * st.restScale;
+          liftY = -(1 - Math.cos(tip)) * half;
+          liftZ = Math.sin(tip) * half;
+          qTip.setFromEuler(eTip.set(tip, 0, 0));
+          st.mesh.quaternion.copy(qTip).multiply(st.restQuat);
+        }
+        st.group.position.set(st.x, vh / 2 - cy + liftY - (1 - st.intro) * 44, liftZ);
       }
 
       const op = st.intro * st.fade;

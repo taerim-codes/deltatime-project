@@ -2,14 +2,20 @@ import BOOKS from '../books.json';
 
 export { BOOKS };
 
+// mode — 서가마다 다른 가구: stack(눕힌 더미) / display(표지 정면 진열) / shelf(꽂힌 책꽂이)
 export const CATS = [
-  { id: 'flow',  no: 'SHELF 01', name: '말들의 흐름' },
-  { id: 'poem',  no: 'SHELF 02', name: '시간의 흐름 시인선' },
-  { id: 'fict',  no: 'SHELF 03', name: '소설' },
-  { id: 'sound', no: 'SHELF 04', name: '소리와 음악' },
-  { id: 'cafe',  no: 'SHELF 05', name: '카페' },
-  { id: 'essay', no: 'SHELF 06', name: '그 밖의 산문' },
+  { id: 'flow',  no: 'SHELF 01', name: '말들의 흐름',       mode: 'stack' },
+  { id: 'poem',  no: 'SHELF 02', name: '시간의 흐름 시인선', mode: 'display' },
+  { id: 'fict',  no: 'SHELF 03', name: '소설',              mode: 'display' },
+  { id: 'sound', no: 'SHELF 04', name: '소리와 음악',        mode: 'shelf' },
+  { id: 'cafe',  no: 'SHELF 05', name: '카페',              mode: 'shelf' },
+  { id: 'essay', no: 'SHELF 06', name: '산문',              mode: 'shelf' },
 ];
+
+export const MODE_BY_CAT = Object.fromEntries(CATS.map(c => [c.id, c.mode]));
+
+// 서 있는 책의 화면 스케일 (책 길이 680px 기준) — 눕힌 책과 존재감을 맞춘다
+export const STAND_SCALE = { shelf: 0.88, display: 0.66 };
 
 export const STORES = [
   { label: '알라딘에서 구매', key: 'aladin' },

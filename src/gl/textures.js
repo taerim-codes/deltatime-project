@@ -96,6 +96,71 @@ export function spineTex(b, wPx, hPx) {
   return toTex(c);
 }
 
+// 꽂힌 책등: 세로쓰기 — 한글이 위에서 아래로, 저자 아래, ΔT 맨 밑.
+// 면의 u축은 책 길이 방향이므로 세로 레이아웃을 따로 그려 90° 돌려 얹는다.
+export function spineVTex(b, wPx, hPx) {
+  const W = 1280, H = Math.max(64, Math.round(W * hPx / wPx));
+  const [c, x] = canvas(W, H);
+
+  x.fillStyle = b.spine;
+  x.fillRect(0, 0, W, H);
+  weave(x, W, H);
+
+  // 세로 레이아웃 (폭 = 책 두께, 높이 = 책 길이)
+  const P = document.createElement('canvas');
+  P.width = H; P.height = W;
+  const p = P.getContext('2d');
+  p.fillStyle = b.fg;
+  p.textAlign = 'center';
+  p.textBaseline = 'middle';
+
+  const chars = [...b.t];
+  let fs = Math.min(H * 0.5, 46);
+  const gap = 1.16;
+  const authorChars = [...spineAuthor(b)];
+  const need = chars.length * fs * gap + 70 + authorChars.length * fs * 0.62 * gap + 160;
+  if (need > P.height * 0.92) fs *= (P.height * 0.92) / need;
+
+  let y = P.height * 0.045;
+  p.font = `400 ${Math.round(fs)}px "Gowun Batang"`;
+  for (const ch of chars) {
+    if (ch === ' ') { y += fs * 0.5; continue; }
+    y += fs * gap / 2;
+    p.fillText(ch, P.width / 2, y);
+    y += fs * gap / 2;
+  }
+  y += 56;
+  p.globalAlpha = 0.66;
+  p.font = `400 ${Math.round(fs * 0.56)}px "Noto Sans KR"`;
+  for (const ch of authorChars) {
+    if (ch === ' ') { y += fs * 0.3; continue; }
+    y += fs * 0.62;
+    p.fillText(ch, P.width / 2, y);
+  }
+  p.globalAlpha = 0.5;
+  p.font = `400 ${Math.round(Math.min(H * 0.3, 26))}px "IBM Plex Mono"`;
+  p.fillText('ΔT', P.width / 2, P.height - 52);
+
+  // 세로 레이아웃을 면 좌표로 90° 회전 — 면→화면 매핑을 거치면 정립으로 보인다
+  x.save();
+  x.setTransform(0, -1, 1, 0, 0, H);
+  x.drawImage(P, 0, 0);
+  x.restore();
+
+  const light = x.createLinearGradient(0, 0, 0, H);
+  light.addColorStop(0, 'rgba(255,255,255,.13)');
+  light.addColorStop(0.4, 'rgba(255,255,255,0)');
+  light.addColorStop(1, 'rgba(0,0,0,.15)');
+  x.fillStyle = light;
+  x.fillRect(0, 0, W, H);
+
+  x.strokeStyle = 'rgba(0,0,0,.15)';
+  x.lineWidth = 2;
+  x.strokeRect(1, 1, W - 2, H - 2);
+  grain(x, W, H, 0.05);
+  return toTex(c);
+}
+
 // 소스 표지(~1200px)보다 크게 구워 다운샘플 모아레를 막고, 축소는 GPU 밉맵에 맡긴다.
 export function coverFaceTex(img, b, quarter) {
   const W = 1280, H = Math.round(W * 284 / 436);

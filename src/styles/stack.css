@@ -60,6 +60,29 @@ body.detail-mode .relay-layer{display:none}
   border-radius:0 0 3px 3px;box-shadow:inset 0 -1px 0 rgba(0,0,0,.35);
 }
 
+/* 서가 가구: 꽂힌 줄(shelf)과 정면 진열(display) */
+.srow{display:flex;justify-content:center;align-items:flex-end;margin-bottom:9rem}
+.srow .pbook{width:auto;margin-bottom:0;filter:drop-shadow(0 22px 22px rgba(0,0,0,.45))}
+.srow.shelf{gap:5px}
+.srow.display{gap:2.2rem;flex-wrap:wrap}
+.srow .pbook:hover,.srow .pbook:focus-visible{filter:drop-shadow(0 30px 28px rgba(0,0,0,.5))}
+.vsp{
+  display:flex;align-items:flex-start;justify-content:center;width:100%;height:100%;
+  border-radius:2px;padding-top:14px;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.14);
+}
+.vsp b{
+  writing-mode:vertical-rl;text-orientation:upright;
+  font-family:var(--serif);font-weight:400;font-size:.7rem;letter-spacing:.3em;
+  overflow:hidden;max-height:calc(100% - 40px);
+}
+.vsp:hover{transform:translateY(-8px)}
+.vsp{transition:transform .35s cubic-bezier(.22,.9,.3,1)}
+.vcv{display:block;width:100%;height:100%;border-radius:2px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.16)}
+.vcv img{width:100%;height:100%;object-fit:cover;display:block}
+body.gl .vsp,body.gl .vcv{opacity:0}
+body.gl .srow .pbook{filter:none}
+
 @media (prefers-reduced-motion:reduce){
   .pbook{opacity:1;transform:none;transition:none}
   .pwrap{transition:none}
