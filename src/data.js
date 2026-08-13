@@ -26,7 +26,7 @@ export const STORES = [
   { label: '예스24에서 구매', key: 'yes24' },
 ];
 
-export const coverSrc = b => b.coverHd || b.cover;
+export const coverSrc = b => b.coverXl || b.coverHd || b.cover;
 
 // 작은 화면에선 책 자체가 뷰포트에 맞게 줄어든다 (레이아웃과 GL이 같은 값을 공유)
 const FIT = Math.min(1, (typeof window === 'undefined' ? 1200 : window.innerWidth) * 0.88 / 680);
