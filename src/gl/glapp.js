@@ -116,7 +116,7 @@ export async function initGL() {
     const im = new Image();
     im.onload = () => resolve(im);
     im.onerror = () => resolve(null);
-    im.src = '/' + coverSrc(b);
+    im.src = import.meta.env.BASE_URL + coverSrc(b); // 서브패스 배포(GitHub Pages) 대응
   })));
 
   const cv = renderer.domElement;
