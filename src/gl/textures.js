@@ -207,6 +207,25 @@ export function pagesTex(repX, repY) {
   return t;
 }
 
+// 실제 뒷표지 — 표지면과 같은 면 좌표계, 뒤집었을 때 바로 서는 방향
+export function coverBackTex(img, b) {
+  const W = 1280, H = Math.round(W * 284 / 436);
+  const [c, x] = canvas(W, H);
+  x.fillStyle = b.spine;
+  x.fillRect(0, 0, W, H);
+  x.save();
+  x.imageSmoothingQuality = 'high';
+  x.translate(W / 2, H / 2);
+  x.rotate(-Math.PI / 2);
+  x.drawImage(img, -H / 2, -W / 2, H, W);
+  x.restore();
+  x.strokeStyle = 'rgba(0,0,0,.16)';
+  x.lineWidth = 2;
+  x.strokeRect(1, 1, W - 2, H - 2);
+  grain(x, W, H, 0.03);
+  return toTex(c);
+}
+
 export function backTex() {
   const [c, x] = canvas(256, 256);
   x.fillStyle = '#F6F4EE';

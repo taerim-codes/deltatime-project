@@ -60,7 +60,10 @@ function fillCSSBook(b) {
   fw.style.animation = '';
 }
 
-export function openBook(i) {
+const bookKey = b => b.isbn || String(BOOKS.indexOf(b));
+const bookIndexByKey = key => BOOKS.findIndex(b => bookKey(b) === String(key));
+
+export function openBook(i, viaHistory = false) {
   if (busy) return;
   const wasOpen = document.body.classList.contains('detail-mode');
   current = (i + BOOKS.length) % BOOKS.length;
@@ -70,6 +73,11 @@ export function openBook(i) {
   fillDOM(b);
   document.body.classList.add('detail-mode');
   d.scrollTop = 0;
+  if (!viaHistory) {
+    const url = `#b-${bookKey(b)}`;
+    if (wasOpen) history.replaceState({ book: bookKey(b) }, '', url);
+    else history.pushState({ book: bookKey(b) }, '', url);
+  }
   if (presenter) {
     busy = true;
     (wasOpen ? presenter.swap : presenter.open)(current, () => { busy = false; });
@@ -79,7 +87,7 @@ export function openBook(i) {
   el('backBtn').focus();
 }
 
-function closeBook() {
+function performClose() {
   if (busy) return;
   const d = el('detail');
   const refocus = () => {
@@ -99,14 +107,41 @@ function closeBook() {
   }
 }
 
+// 닫기는 항상 히스토리를 거친다 — 버튼과 브라우저 뒤로가기가 같은 길
+function requestClose() {
+  if (busy) return;
+  if (history.state?.book != null) history.back();
+  else performClose();
+}
+
 export function initDetail() {
-  el('backBtn').addEventListener('click', closeBook);
+  el('backBtn').addEventListener('click', requestClose);
   el('prevBtn').addEventListener('click', () => openBook(current - 1));
   el('nextBtn').addEventListener('click', () => openBook(current + 1));
   document.addEventListener('keydown', e => {
     if (!document.body.classList.contains('detail-mode')) return;
-    if (e.key === 'Escape') closeBook();
+    if (e.key === 'Escape') requestClose();
     if (e.key === 'ArrowLeft') openBook(current - 1);
     if (e.key === 'ArrowRight') openBook(current + 1);
   });
+
+  addEventListener('popstate', e => {
+    const key = e.state?.book;
+    if (key != null) {
+      const i = bookIndexByKey(key);
+      if (i >= 0) openBook(i, true);
+    } else if (document.body.classList.contains('detail-mode')) {
+      performClose();
+    }
+  });
+
+  // 딥링크: #b-<isbn>으로 들어오면 그 책을 바로 펼친다
+  const m = location.hash.match(/^#b-(.+)$/);
+  if (m) {
+    const i = bookIndexByKey(m[1]);
+    if (i >= 0) {
+      history.replaceState({ book: m[1] }, '', location.hash);
+      openBook(i, true);
+    }
+  }
 }

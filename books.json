@@ -52,7 +52,8 @@
       "첫 권인 이 책은 커피와 담배라는 가장 일상적인 소품을 통해 고독과 위로를 탐구한다. 삶의 의미를 찾아가는 개인적 여정이 섬세한 문장으로 펼쳐진다."
     ],
     "extra": "132쪽 · 120*200mm · ISBN 9791196517168",
-    "coverHd": "assets/covers-hd/01-coffee-cigarettes.jpg"
+    "coverHd": "assets/covers-hd/01-coffee-cigarettes.jpg",
+    "coverBack": "assets/covers-back/01-coffee-cigarettes.jpg"
   },
   {
     "cat": "flow",
@@ -102,7 +103,8 @@
       "이 책은 담배와 영화를 빌미로 실패의 세계를 탐구한다. 저자는 담배 끊기에도 영화 포기에도 실패했고, 그 실패들이 결국 인생이라는 길 자체임을 보여준다."
     ],
     "extra": "152쪽 · 120*200mm · ISBN 9791196517175",
-    "coverHd": "assets/covers-hd/02-cigarettes-film.jpg"
+    "coverHd": "assets/covers-hd/02-cigarettes-film.jpg",
+    "coverBack": "assets/covers-back/02-cigarettes-film.jpg"
   },
   {
     "cat": "flow",
@@ -161,7 +163,8 @@
       "정지돈의 이 에세이는 영화와 시를 향한 진심 어린 애정의 고백이다. 대상을 정말 사랑하는 사람만이 보여줄 수 있는 열기가 문장 곳곳에 배어 있다."
     ],
     "extra": "152쪽 · 120*200mm · ISBN 9791196517182",
-    "coverHd": "assets/covers-hd/03-film-poetry.jpg"
+    "coverHd": "assets/covers-hd/03-film-poetry.jpg",
+    "coverBack": "assets/covers-back/03-film-poetry.jpg"
   },
   {
     "cat": "flow",
@@ -233,7 +236,8 @@
       "말들의 흐름 시리즈 중에서도 오래 사랑받아 온 책으로, 조용히 스며드는 문장의 힘을 지녔다."
     ],
     "extra": "176쪽 · 120*200mm · ISBN 9791196517199",
-    "coverHd": "assets/covers-hd/04-poetry-walks.jpg"
+    "coverHd": "assets/covers-hd/04-poetry-walks.jpg",
+    "coverBack": "assets/covers-back/04-poetry-walks.jpg"
   },
   {
     "cat": "flow",
@@ -278,7 +282,8 @@
       "산책과 연애가 우리 삶에 남듯, 이 책도 읽는 사람의 마음에 흔적을 남긴다."
     ],
     "extra": "134쪽 · 120*200mm · ISBN 9791190999014",
-    "coverHd": "assets/covers-hd/05-walks-love.jpg"
+    "coverHd": "assets/covers-hd/05-walks-love.jpg",
+    "coverBack": "assets/covers-back/05-walks-love.jpg"
   },
   {
     "cat": "flow",
@@ -348,7 +353,8 @@
       "뾰족뾰족한 문장 대신 동글동글한 문장으로, 인간관계의 바닥에 흐르는 이름 없는 외로움을 따뜻하게 어루만진다."
     ],
     "extra": "220쪽 · 120*200mm · ISBN 9791190999021",
-    "coverHd": "assets/covers-hd/06-love-drinks.jpg"
+    "coverHd": "assets/covers-hd/06-love-drinks.jpg",
+    "coverBack": "assets/covers-back/06-love-drinks.jpg"
   },
   {
     "cat": "flow",
@@ -397,7 +403,8 @@
       "취함과 깨어남 사이의 감각을 일상의 유쾌한 기억으로 바꾸어 놓는 책이다."
     ],
     "extra": "200쪽 · 120*200mm · ISBN 9791190999069",
-    "coverHd": "assets/covers-hd/07-drinks-jokes.jpg"
+    "coverHd": "assets/covers-hd/07-drinks-jokes.jpg",
+    "coverBack": "assets/covers-back/07-drinks-jokes.jpg"
   },
   {
     "cat": "flow",
@@ -455,7 +462,8 @@
       "이 책은 삶의 지침서가 아니다. 한밤중에 전화해도 혼내지 않을 친구처럼, 독자의 불안과 속내를 가만히 받아 주는 책이다."
     ],
     "extra": "132쪽 · 120*200mm · ISBN 9791190999076",
-    "coverHd": "assets/covers-hd/08-jokes-shadows.jpg"
+    "coverHd": "assets/covers-hd/08-jokes-shadows.jpg",
+    "coverBack": "assets/covers-back/08-jokes-shadows.jpg"
   },
   {
     "cat": "flow",
@@ -510,7 +518,8 @@
       "책을 덮은 뒤에도 사랑의 존재들과 텍스트의 가장자리가 멈추지 않고 맴돌지 모른다. 그의 문장은 독자의 꿈속으로 스며들 것이다."
     ],
     "extra": "128쪽 · 120*200mm · ISBN 9791190999113",
-    "coverHd": "assets/covers-hd/09-shadows-dawn.jpg"
+    "coverHd": "assets/covers-hd/09-shadows-dawn.jpg",
+    "coverBack": "assets/covers-back/09-shadows-dawn.jpg"
   },
   {
     "cat": "flow",
@@ -591,7 +600,8 @@
         "label": "불면의 밤을 위한 Playlist",
         "url": "https://youtube.com/playlist?list=PLZBSsp5eRJ1TXThnxhK-pOsY7yHnE1Wi6"
       }
-    ]
+    ],
+    "coverBack": "assets/covers-back/10-dawn-music.jpg"
   },
   {
     "cat": "poem",
@@ -643,7 +653,8 @@
       "『사랑하는 소년이 얼음 밑에 살아서』는 깊고 차갑다. 슬픔은 입김처럼 소녀와 소년의 곁을 자꾸만 맴돈다. 소녀와 소년이 주고받는 대사를 따라 걷다 보면 내내 마음이 저리고 아프다. 희망은 없지만 미래는 있는 세계. 미래가 과거이기도 한 세계. 그래도, 과거로 걷다 걷다 보면 투명한 미래를 만날지도 모른다. 슬픔을 지나칠 수도, 불행을 통과할 수도 있게. “조심해. 울다가 웃으면 어른이 된다.” 울다가 웃으면 어른이 되는 세상은 좋은 세상일까. 그렇게라도 죽지 않고 어른이 되어야 좋은 이야기일까. 어떤 아이는 여진이 되고, 어떤 아이는 이르게 해파리가 되는 세계에서, 슬픔의 목소리들이 빈 의자를 꿰차고 일렁이는 세계에서, 막(幕)이 내린 빈 무대는 기어코 소녀와 소년이 사는 집(集)이 된다. 소녀와 소년의 시로 쓴 집이 된다. 펑펑 아름다운 집이 된다."
     ],
     "extra": "112쪽 · 105*175mm · ISBN 9791190999120",
-    "coverHd": "assets/covers-hd/poet-01-loving-boy.jpg"
+    "coverHd": "assets/covers-hd/poet-01-loving-boy.jpg",
+    "coverBack": "assets/covers-back/poet-01-loving-boy.jpg"
   },
   {
     "cat": "poem",
@@ -722,7 +733,8 @@
       "『이중 연습』에 등장하는 인물들은 서사의 중심인 공간에서 사라졌다 나타나기를 반복한다. 도시에서 혹은 공원에서, 전철역이나 타국의 사막에서 조우하듯 등장한다. 그들은 모두 어려움을 안고 있고 세상을 잘 살아낼 능력을 상실한 이들에 가깝다. 잘 살아가기엔 위태로워 보이는 사람들이다. 작가는 시를 통해 기록할 수 있는 이름을 부르지만 그것들의 이름을 부르는 것마저도 조심스럽다. “둥근 것은 빠져나가기 쉬운 것이므로 / 너무 쉬이 나가버리지 못하도록”(「등대」) 둥글고, 둥근 그것이 한 세계에서 빠져나가버리기 쉬운 것이 될까 봐 알아차리지 못한 걸음으로 그곳을 지나친다. 그러나 작가가 시와 시 사이로 걸음을 옮기는 동안 사라지지 않은 것들의 안부가, 어둠 속에서 풀려나온 존재들이 숨 쉬듯 곳곳에 빛나는 것을 독자들은 보게 될 것이다."
     ],
     "extra": "160쪽 · 105*175mm · ISBN 9791190999137",
-    "coverHd": "assets/covers-hd/poet-02-double-practice.jpg"
+    "coverHd": "assets/covers-hd/poet-02-double-practice.jpg",
+    "coverBack": "assets/covers-back/poet-02-double-practice.jpg"
   },
   {
     "cat": "poem",
@@ -823,7 +835,8 @@
       "『성격소품』에 등장하는 인물들은 빛이 저문 후 풍경에 서 있는 사람들이거나 모두가 잠든 시간에 깨어나는 망령들의 움직임 같다. 그들에게 세상의 질서는 망망대해에 깃대를 올리고 가는 연약한 선체에 불과하다. 각각의 시들은 ‘성격소품’이라는 단아하지만 강한 면모를 보이는 제목처럼 견고한 틀 속 풍경 이야기이다. 그러나 틀 안에 잠긴 풍경은, 독자들이 짐작할 수 있는 것을 뛰어넘어 펼쳐진다. 배제를 모르는 시인은 등장한 줄 모르고 사라진 존재들의 그림자마저도 일으켜 세우려 한다. 그것이 비록 실패로 돌아갈지라도. 아니, 실패가 필연인 시도를 거듭할지라도. 완전하지 못한 성격의 소품들을 혹은 성품을 과연 독자들은 어떻게 볼 것인가. 각각 보이는 시편들을 하나로 특정할 수 없으나 구석구석 들여다보며 발견하는 꼼꼼한 시선을,『성격소품』의 첫 시를 읽는 순간 당신은 얻을 것이다."
     ],
     "extra": "128쪽 · 105*175mm · ISBN 9791190999144",
-    "coverHd": "assets/covers-hd/poet-03-character-pieces.jpg"
+    "coverHd": "assets/covers-hd/poet-03-character-pieces.jpg",
+    "coverBack": "assets/covers-back/poet-03-character-pieces.jpg"
   },
   {
     "cat": "poem",
@@ -901,7 +914,8 @@
       "우리는 이 시집을 통해 현대 사회에서 느끼는 개인의 고립감과 무력감을 극복할 수 있는 하나의 방향을 본다. 그건 일시적이지 않고 영원함의 이야기다.『우화들』은 현대인의 삶과 역사, 그리고 미래에 대한 깊은 통찰을 담은 하나의 사기(史記)로서, 문학적, 철학적으로 우리의 삶을 기록하는 작품이다."
     ],
     "extra": "112쪽 · 105*175mm · ISBN 9791190999199",
-    "coverHd": "assets/covers-hd/poet-04-fables.jpg"
+    "coverHd": "assets/covers-hd/poet-04-fables.jpg",
+    "coverBack": "assets/covers-back/poet-04-fables.jpg"
   },
   {
     "cat": "fict",
@@ -957,7 +971,8 @@
       "『페른베』는 우리에게 특별한 위안을 건네는 소설이다. 완전한 삶을 강요받는 이 시대에, 소설은 우리의 불완전함과 단절된 감정을 있는 그대로 인정하라고 등 두드린다. 희수가 글쓰기를 통해 자신의 과거와 어머니 ‘동이 씨’와의 관계를 마주하듯, 우리도 삶의 불편한 진실들과 마주할 때 비로소 선명해지는 세계가 있다고 말한다."
     ],
     "extra": "160쪽 · 115×190mm · ISBN 9791190999212",
-    "coverHd": "assets/covers-hd/fic-fernweh.jpg"
+    "coverHd": "assets/covers-hd/fic-fernweh.jpg",
+    "coverBack": "assets/covers-back/fic-fernweh.jpg"
   },
   {
     "cat": "fict",
@@ -1043,7 +1058,8 @@
       "서로가 서로를 둘러싸고 둘러싸여 있기에, 우리는 무언가를, 누군가를 잃었을 때 고통을 겪을 수밖에 없다. 상실은 몸의 모든 감각으로 그의 부재를 겪어내는 일이다. 동시에 우리가 품고 있던 그가 얼마나 소중했는지를 깨닫는 일이며, “사랑은 필요도 아름다움도 아니”라는 것을 아는 일이다."
     ],
     "extra": "228쪽 · 115×190mm · ISBN 9791190999090",
-    "coverHd": "assets/covers-hd/fic-umpukhan.jpg"
+    "coverHd": "assets/covers-hd/fic-umpukhan.jpg",
+    "coverBack": "assets/covers-back/fic-umpukhan.jpg"
   },
   {
     "cat": "fict",
@@ -1094,7 +1110,8 @@
       "다양한 텍스트를 섭렵해 인용하면서 위트 있는 통찰을 보여주는 작가 정지돈은 죽음과 관련해 묵직한 질문 하나를 던진다. 나를 나로 만드는 것은 무엇인가. 그 질문에 대한 대답으로 선보이는 이 소설은 지적이며 악의 없는 블랙 유머 같다."
     ],
     "extra": "116쪽 · 115×190mm · ISBN 9791190999151",
-    "coverHd": "assets/covers-hd/fic-short-stories.jpg"
+    "coverHd": "assets/covers-hd/fic-short-stories.jpg",
+    "coverBack": "assets/covers-back/fic-short-stories.jpg"
   },
   {
     "cat": "sound",
@@ -1147,7 +1164,8 @@
       "사르트르가 자신의 시대에 매몰되지 않을 수 있었던 것. 니체가 광기의 절정 속에서도 삶을 지탱할 수 있었던 것. 바르트가 우울과 멜랑콜리를 견디고 새로운 사유를 창조했던 것. 여기에는 이들이 평생토록 손에서 놓지 않았던 피아노의 역할이 크다. 피아노를 연주하며 음악 안에서 사랑하고 꿈꾸었던 시간들. 이들은 음악을 통해 자신만의 리듬으로 삶을 살아냈다. 사르트르, 니체, 바르트는 말한다. \"피아노를 통해 음악 안에서 사색하고 사랑하고 꿈꾸었노라고.\" 이들은 모두 피아노 연주를 몸과 긴밀히 연결시켰다. 그 방식은 저마다 달랐지만 피아노는 각자의 철학과 삶에 짙은 흔적을 남겼다. 세계를 해석하는 독보적인 세계관을 소유했던 사르트르와 니체 그리고 바르트. 이 책을 통해 철학자로만 알았던 세 사람을 새롭게 보고, 음악에 대한 이해의 지평이 넓어지는 경험을 하기 바란다."
     ],
     "extra": "212쪽 · 124×188mm · ISBN 9791190999038",
-    "coverHd": "assets/covers-hd/snd-philosopher-keyboard.jpg"
+    "coverHd": "assets/covers-hd/snd-philosopher-keyboard.jpg",
+    "coverBack": "assets/covers-back/snd-philosopher-keyboard.jpg"
   },
   {
     "cat": "sound",
@@ -1221,7 +1239,8 @@
       }
     ],
     "extra": "376쪽 · 177×251mm · ISBN 9791190999229",
-    "coverHd": "assets/covers-hd/snd-keith-jarrett.jpg"
+    "coverHd": "assets/covers-hd/snd-keith-jarrett.jpg",
+    "coverBack": "assets/covers-back/snd-keith-jarrett.jpg"
   },
   {
     "cat": "sound",
@@ -1284,7 +1303,8 @@
         "label": "음악의 언어 Playlist",
         "url": "https://youtube.com/playlist?list=PLZBSsp5eRJ1QasYzAQgEY-82PM_4mZjAh"
       }
-    ]
+    ],
+    "coverBack": "assets/covers-back/snd-language-of-music.jpg"
   },
   {
     "cat": "sound",
@@ -1385,7 +1405,8 @@
       "태어나는 순간부터, 아니 어머니의 배 속에 있을 때부터 죽기 전까지(어쩌면 죽고 난 뒤에도) 우리 인간은 어떤 종류의 것이든 소리들 속에서 살아간다. 적어도 지구상에 소리가 없는 곳은 존재하지 않는다. 마치 소리가 없는 것처럼 느껴지는 고요한 곳에서도 우리는 스스로의 몸이 내는 소리로부터는 벗어날 수 없다. 새와 고래의 노래, 무지개 속 물방울과 오로라의 찰나, 지구라는 별과 끝 모를 우주에서 생명과 비생명이 뒤엉켜 이어온 유구한 역사는 어쩌면 너무나 비밀스럽게 팽창해온 소리의 역사인지도 모른다. 나아가 생명과 자연과 우주의 역사는 우리가 결코 알 수 없는 신이 온갖 소리들로 써 내려간 한 편의 대서사시가 아닐는지. 『소리에 관한 책』은 감각이자 풍경이요, 듣는 것이자 눈에 담는 것이기도 한 소리의 거부할 수 없는 매혹적인 세계로 기꺼이 독자를 초대한다."
     ],
     "extra": "392쪽 · 122×195mm · ISBN 9791190999182",
-    "coverHd": "assets/covers-hd/snd-book-of-noises.jpg"
+    "coverHd": "assets/covers-hd/snd-book-of-noises.jpg",
+    "coverBack": "assets/covers-back/snd-book-of-noises.jpg"
   },
   {
     "cat": "cafe",
@@ -1446,7 +1467,8 @@
       "『카운터 일기』는 뉴욕 브루클린의 한 카페에서 바리스타로 일하는 저자가 카운터에서 기록한 4년간의 일기를 묶은 에세이다. 카페를 방문하는 손님을 저마다 개성있는 한 알의 커피콩으로 바라보는 저자 특유의 다정하고 유쾌한 시선이 60편의 짤막한 에피소드에 담겨 있다. 이 에피소드들은 자신도 모르는 사이에 머리카락 떨구듯 자기 삶의 조각을 카운터에 놓고 간 우리 이야기이기도 하다. 저자는 그 이야기들을 한 올 한 올 집어 일기장에 끼워놓았다. 천천히 책을 읽다 보면 도돌이표처럼 다시 돌아오기도 하고, 말줄임표처럼 스르르 사라지기도 한다. 카페의 풍경과 사람들의 모습이 눈앞에 그려지듯 선명하다."
     ],
     "extra": "236쪽 · 128*188mm · ISBN 9791196517120",
-    "coverHd": "assets/covers-hd/cafe-counter-diary.jpg"
+    "coverHd": "assets/covers-hd/cafe-counter-diary.jpg",
+    "coverBack": "assets/covers-back/cafe-counter-diary.jpg"
   },
   {
     "cat": "cafe",
@@ -1500,7 +1522,8 @@
       "하루의 대부분을 카페에서 보내기에 카페를 고르는 기준 역시 높아질 수밖에 없는데, 그 취향이 참 까다롭기도 하다. 분명한 건 ‘커피’가 그 기준이 되는 것은 아니며, 카페에 놓인 ‘물건’이나 그 물건들의 ‘배치’도 아니다. 결국에는 분위기로 수렴되는 그 무엇. 그리고 이 신기한 현상은 공간뿐 아니라 사람에게도 적용된다."
     ],
     "extra": "156쪽 · 128*188mm · ISBN 9791190999007",
-    "coverHd": "assets/covers-hd/cafe-sorry-regular.jpg"
+    "coverHd": "assets/covers-hd/cafe-sorry-regular.jpg",
+    "coverBack": "assets/covers-back/cafe-sorry-regular.jpg"
   },
   {
     "cat": "cafe",
@@ -1551,7 +1574,8 @@
       "코로나19로 해외 여행은 아직도 요원하기만 하다. 이런 우리 마음을 읽은 것인지, 저자는 ‘올봄에 이 책 하나 가방에 넣고 다니면 파리를 넣고 다니는 것!’이라고 말한다. 정말 그렇다. 중세와 루이14세의 절대왕정기, 프랑스 혁명을 지나 나폴레옹 통치기와 세계 대전, 그리고 2015년 파리 테러 사건을 통과하기까지, 굵직한 역사의 풍파를 맞은 프랑스에 깊히 뿌리내린 ‘프랑스스러움’을 저자의 눈을 통해 느껴보길 추천한다."
     ],
     "extra": "160쪽 · 128*188mm · ISBN 9791190999052",
-    "coverHd": "assets/covers-hd/cafe-mon-cafe.jpg"
+    "coverHd": "assets/covers-hd/cafe-mon-cafe.jpg",
+    "coverBack": "assets/covers-back/cafe-mon-cafe.jpg"
   },
   {
     "cat": "cafe",
@@ -1604,7 +1628,8 @@
       "카페 밖에서도 여행은 계속된다. 음반 가게를 순회하며 좋아하는 밴드의 음반을 찾고, 작은 잡화점에서 마음에 드는 빈티지 찻잔을 고른다. 꽃집에서 미모사 한 단을 사 들고 숙소로 돌아오는 길에는 잠시 정주자가 된 기분을 느낀다. 그런가 하면 도쿄의 복잡한 전철 환승에 진땀을 빼고, 카페에서 빈 잔을 치워가는 직원의 의도를 오해하는 순간에는 어김없이 여행자로 돌아온다. 저자의 도쿄는 그 두 곳 사이 어딘가에 있다."
     ],
     "extra": "144쪽 · 128*188mm · ISBN 9791190999250",
-    "coverHd": "assets/covers-hd/cafe-tokyo-cafe.jpg"
+    "coverHd": "assets/covers-hd/cafe-tokyo-cafe.jpg",
+    "coverBack": "assets/covers-back/cafe-tokyo-cafe.jpg"
   },
   {
     "cat": "essay",
@@ -1686,7 +1711,8 @@
       "『영화의 언어』는 영화를 정보로만 보는 시대에 요약되지 않는 부분-한 배우의 눈짓, 장례식장 신의 블로킹, 컷 사이의 위화감, 너무 크게 틀어놓은 노래 한 곡, 영사막이 꺼진 뒤에도 계속되는 생각들-에 진짜가 있다고 믿는 관객 편에 서 있는 산문집이다. 속도와 효율, 줄거리와 결말이 전부인 것처럼 보이는 시대에 ‘영화가 손짓하는 쪽으로 한 걸음 더’ 다가가보자고 제안하는 이 책은 영화를 새롭게 읽고자 하는 이들을 위한 감각의 교양서가 되어준다."
     ],
     "extra": "196쪽 · 125*200mm · ISBN 9791190999243",
-    "coverHd": "assets/covers-hd/es-language-of-film.jpg"
+    "coverHd": "assets/covers-hd/es-language-of-film.jpg",
+    "coverBack": "assets/covers-back/es-language-of-film.jpg"
   },
   {
     "cat": "essay",
@@ -1727,7 +1753,8 @@
       }
     ],
     "extra": "192쪽 · 150*220mm · ISBN 9791190999168",
-    "coverHd": "assets/covers-hd/es-requiem-typewriter.jpg"
+    "coverHd": "assets/covers-hd/es-requiem-typewriter.jpg",
+    "coverBack": "assets/covers-back/es-requiem-typewriter.jpg"
   },
   {
     "cat": "essay",
@@ -1796,7 +1823,8 @@
       "이제 나는 해가 질 무렵이면 자연스레 집을 나선다. 다만 그때 그 여자들과 다른 점이 있다면 그녀들은 앉아서, 나는 걸으면서 지금 내 앞에 생생히 살아 있는 것들을 목격한다는 것이다. 내게 걷는 일은 보는 일이다. _「목격자(Le temoin)」, 80쪽"
     ],
     "extra": "172쪽 · 120*200mm · ISBN 9791190999106",
-    "coverHd": "assets/covers-hd/es-beyond-window.jpg"
+    "coverHd": "assets/covers-hd/es-beyond-window.jpg",
+    "coverBack": "assets/covers-back/es-beyond-window.jpg"
   },
   {
     "cat": "essay",
@@ -1852,7 +1880,8 @@
       "그런데 정작 중요한 사실은 방 밖에 ‘없는’ 사람들에 대해서 궁금해하는 것은 방 밖에 ‘있는’ 사람의 몫이라는 점이다. 방 밖에 없는 사람의 관심사는 방 자체다. 시인의 말처럼, 어쩌면 우리가 방에서 살고 있는 것이 아니라, 방이 우리를 키우고 있는 것인지도 모른다.",
       "시인의 상상력으로 써 내려간 방에 대한 이 글을 읽고 나면, 방 밖에 있는 우리는 시인이 방을 바라보는 또 하나의 관점을 획득하게 될 것이다. 나만의 성역이자 나의 법률이 지배하는 곳, 그리고 무엇보다 나의 마음을 보살피는 일이 이뤄지는 공간으로서의 내 방이 조금은 다르게 보일 것이다."
     ],
-    "coverHd": "assets/covers-hd/es-person-in-room.jpg"
+    "coverHd": "assets/covers-hd/es-person-in-room.jpg",
+    "coverBack": "assets/covers-back/es-person-in-room.jpg"
   },
   {
     "cat": "essay",
@@ -1907,7 +1936,8 @@
       "책에서 다루고 있는 논점과 주제들은 여전히 작금의 미적 전위와 정치의 관계, 미학적 진리의 관계 등과 연결하여 읽어야 할 내용들이다. 20세기 이래 끊임없이 변주되어온 유구한 주제인 지난 세기 초의 형식주의, 아방가르드, 사회주의 리얼리즘 등을 둘러싸고 일어난 이론적 반향들, 1930년대 루카치, 브레히트, 블로흐 등을 중심으로 한 소위 표현주의 논쟁, 1950-1960년대 상황주의 및 68혁명과 관련된 논의 등은 어떤 방식으로든 오늘날 한국문학의 주제와도 이어져 있다. 하이데거 이래 랑시에르, 바디우 등의 현대 철학자들이 미학과 진리의 관계를 둘러싸고 전개한 논전 역시 마찬가지다. 흐려진 태양과 바래진 풀과 날리는 눈발과 얼어붙은 운하의 물속에서 건져 올린 러시아의 시와 미학은 혁명이란 보편성의 옷을 걸치고 모더니즘이란 모종의 길을 따라 걸으며 조용한 우리의 일상을 눈 뜨게 한다. 그렇다면 우리는 이 책을 어떤 마음으로 읽어야 할까? 혁명이나 모더니즘의 마음으로 읽어야 할까? 외로움조차 사라진 마음으로 읽어야 할까? 혼자 동물원을 거니는 오후처럼 읽어야 할까? 어떤 사실 속에서 태어난 의욕처럼 읽어야 할까? 어떻게 읽든 그건 읽는 저마다의 마음이겠지만, 고단한 삶을 살아내듯이, 살아 있는 풍경들을 머릿속에 그리듯이 읽으면 더 좋을 것이다."
     ],
     "extra": "312쪽 · 140*210mm · ISBN 9791196517113",
-    "coverHd": "assets/covers-hd/es-revolution-modernism.jpg"
+    "coverHd": "assets/covers-hd/es-revolution-modernism.jpg",
+    "coverBack": "assets/covers-back/es-revolution-modernism.jpg"
   },
   {
     "cat": "essay",
@@ -1978,7 +2008,8 @@
     "yes24": "https://www.yes24.com/Product/Goods/167437333",
     "pages": "216쪽",
     "size": "130*190mm",
-    "coverHd": "assets/covers-hd/es-mobilis.jpg"
+    "coverHd": "assets/covers-hd/es-mobilis.jpg",
+    "coverBack": "assets/covers-back/es-mobilis.jpg"
   },
   {
     "cat": "essay",
@@ -2049,6 +2080,7 @@
       "이 책의 또 다른 특징은 시인 특유의 섬세한 감각으로 표현한 일상의 작은 변화와 순간들이다. “빛과 바람과 물은 식물의 기본적인 생육조건이기만 할 리 없다. 식물이 빛과 바람과 물을 거느릴 때 완성하는 아름다움은 우리의 둔탁해진 오감을 한 꺼풀 벗겨낸다.” 작가는 식물을 통해 우리의 감각이 일깨워지는 순간들을 보여준다. ‘시선의 산책’ 에서는 베를린 여행 중 창문 너머로 바라본 중정의 풍경을 통해 내면의 갈등과 성찰의 순간을 그린다. 낯선 공간에서 마주친 식물과 건축이 만들어내는 풍경을 통해 자신의 내면을 들여다보는 핍진한 문장들은 우리를 작가의 곁으로 데려가 옆에 세운다. 특히 ‘자세히 보기’와 ‘보이는 것을 보는 눈’에서는 관찰의 방식 자체에 대한 철학적 사유가 돋보인다. “자세히 보아야 예쁘다는 말에 거의 동의하지 않는다. 대충 보았을 때보다 자세히 보았을 때 우리가 인정하고 싶지 않았던, 혹은 마주하고 싶지 않았던 고통과 슬픔의 웅크린 등을 발견할 확률이 더 크다고 여기기 때문”이라고 말하면서도, 동백꽃을 자세히 관찰하는 과정에서 그 입장이 변화하는 모습 또한 보여준다."
     ],
     "extra": "132쪽 · 110*180mm · ISBN 9791190999205",
-    "coverHd": "assets/covers-hd/es-plant-scale.jpg"
+    "coverHd": "assets/covers-hd/es-plant-scale.jpg",
+    "coverBack": "assets/covers-back/es-plant-scale.jpg"
   }
 ]

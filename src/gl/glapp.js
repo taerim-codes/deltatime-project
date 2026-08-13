@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { BOOKS, CATS, MODE_BY_CAT, STAND_SCALE, bookW, spineH, coverSrc } from '../data.js';
 import { siteTime } from '../timedial.js';
-import { spineTex, spineVTex, coverFaceTex, pagesTex, backTex, shadowTex } from './textures.js';
+import { spineTex, spineVTex, coverFaceTex, coverBackTex, pagesTex, backTex, shadowTex } from './textures.js';
 
 const DEPTH_RATIO = 284 / 436;
 const FOV = 15;
@@ -112,12 +112,15 @@ export async function initGL() {
     document.fonts.ready,
   ]);
 
-  const imgs = await Promise.all(BOOKS.map(b => new Promise(resolve => {
+  // 서브패스 배포(GitHub Pages) 대응
+  const loadImg = path => new Promise(resolve => {
     const im = new Image();
     im.onload = () => resolve(im);
     im.onerror = () => resolve(null);
-    im.src = import.meta.env.BASE_URL + coverSrc(b); // 서브패스 배포(GitHub Pages) 대응
-  })));
+    im.src = import.meta.env.BASE_URL + path;
+  });
+  const imgs = await Promise.all(BOOKS.map(b => loadImg(coverSrc(b))));
+  const backImgs = await Promise.all(BOOKS.map(b => (b.coverBack ? loadImg(b.coverBack) : null)));
 
   const cv = renderer.domElement;
   cv.id = 'glcanvas';
@@ -194,7 +197,7 @@ export async function initGL() {
       material(pagesTex(d / 90, th / 30)),
       material(pagesTex(d / 90, th / 30)),
       material(coverFaceTex(imgs[i], b, 3)), // 표지 머리가 왼쪽으로 눕는다 — 세우면 바로 선다
-      material(sharedBackTex),
+      material(backImgs[i] ? coverBackTex(backImgs[i], b) : sharedBackTex),
       material(mode === 'shelf' ? spineVTex(b, w, th) : spineTex(b, w, th)),
       material(pagesTex(w / 90, th / 30)),
     ];
