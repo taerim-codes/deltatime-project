@@ -120,12 +120,12 @@ export async function initGL() {
     im.src = import.meta.env.BASE_URL + path;
   });
   const imgs = await Promise.all(BOOKS.map(b => loadImg(coverSrc(b))));
-  const backImgs = await Promise.all(BOOKS.map(b => (b.coverBack ? loadImg(b.coverBack) : null)));
 
   const cv = renderer.domElement;
   cv.id = 'glcanvas';
   document.body.appendChild(cv);
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const mobile = Math.min(innerWidth, innerHeight) <= 820;
+  renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(FOV, 1, 50, 40000);
@@ -197,7 +197,8 @@ export async function initGL() {
       material(pagesTex(d / 90, th / 30)),
       material(pagesTex(d / 90, th / 30)),
       material(coverFaceTex(imgs[i], b, 3)), // 표지 머리가 왼쪽으로 눕는다 — 세우면 바로 선다
-      material(backImgs[i] ? coverBackTex(backImgs[i], b) : sharedBackTex),
+      material(sharedBackTex), // 실제 뒷표지는 책을 열 때 지연 로드
+
       material(mode === 'shelf' ? spineVTex(b, w, th) : spineTex(b, w, th)),
       material(pagesTex(w / 90, th / 30)),
     ];
@@ -334,8 +335,20 @@ export async function initGL() {
     drag.x = drag.y = drag.vx = drag.vy = 0;
   }
 
+  // 뒷표지는 상세에서 처음 열릴 때만 로드 — 32장을 미리 올리면 모바일이 죽는다
+  function ensureBackCover(st) {
+    if (st.backReady || !st.b.coverBack) return;
+    st.backReady = true;
+    loadImg(st.b.coverBack).then(img => {
+      if (!img) return;
+      st.mats[3].map = coverBackTex(img, st.b);
+      st.mats[3].needsUpdate = true;
+    });
+  }
+
   function open(i, done) {
     const st = books[i];
+    ensureBackCover(st);
     mode = 'detail';
     active = st;
     flying = true;
@@ -416,6 +429,7 @@ export async function initGL() {
       shadowToRest(prev);
     }
     active = st;
+    ensureBackCover(st);
     flying = true;
     st.detached = true;
     st.intro = st.introT = 1;

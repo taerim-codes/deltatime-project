@@ -1,6 +1,11 @@
 import * as THREE from 'three';
 import { spineAuthor } from '../data.js';
 
+// 모바일 GPU 메모리 보호: 텍스처 해상도·이방성 필터를 낮춘다
+const MOBILE = typeof window !== 'undefined' && Math.min(window.innerWidth, window.innerHeight) <= 820;
+const FACE_W = MOBILE ? 704 : 1280;
+const ANISO = MOBILE ? 4 : 16;
+
 function canvas(w, h) {
   const c = document.createElement('canvas');
   c.width = w;
@@ -32,12 +37,12 @@ function weave(x, w, h) {
 function toTex(c) {
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
-  t.anisotropy = 16;
+  t.anisotropy = ANISO;
   return t;
 }
 
 export function spineTex(b, wPx, hPx) {
-  const W = 1280, H = Math.max(64, Math.round(W * hPx / wPx));
+  const W = FACE_W, H = Math.max(64, Math.round(W * hPx / wPx));
   const [c, x] = canvas(W, H);
   const S = W / wPx;
 
@@ -99,7 +104,7 @@ export function spineTex(b, wPx, hPx) {
 // 꽂힌 책등: 세로쓰기 — 한글이 위에서 아래로, 저자 아래, ΔT 맨 밑.
 // 면의 u축은 책 길이 방향이므로 세로 레이아웃을 따로 그려 90° 돌려 얹는다.
 export function spineVTex(b, wPx, hPx) {
-  const W = 1280, H = Math.max(64, Math.round(W * hPx / wPx));
+  const W = FACE_W, H = Math.max(64, Math.round(W * hPx / wPx));
   const [c, x] = canvas(W, H);
 
   x.fillStyle = b.spine;
@@ -163,7 +168,7 @@ export function spineVTex(b, wPx, hPx) {
 
 // 소스 표지(~1200px)보다 크게 구워 다운샘플 모아레를 막고, 축소는 GPU 밉맵에 맡긴다.
 export function coverFaceTex(img, b, quarter) {
-  const W = 1280, H = Math.round(W * 284 / 436);
+  const W = FACE_W, H = Math.round(W * 284 / 436);
   const [c, x] = canvas(W, H);
 
   x.fillStyle = b.spine;
@@ -209,7 +214,7 @@ export function pagesTex(repX, repY) {
 
 // 실제 뒷표지 — 표지면과 같은 면 좌표계, 뒤집었을 때 바로 서는 방향
 export function coverBackTex(img, b) {
-  const W = 1280, H = Math.round(W * 284 / 436);
+  const W = FACE_W, H = Math.round(W * 284 / 436);
   const [c, x] = canvas(W, H);
   x.fillStyle = b.spine;
   x.fillRect(0, 0, W, H);

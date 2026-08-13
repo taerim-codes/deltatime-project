@@ -28,22 +28,24 @@ export const STORES = [
 
 export const coverSrc = b => b.coverHd || b.cover;
 
+// 작은 화면에선 책 자체가 뷰포트에 맞게 줄어든다 (레이아웃과 GL이 같은 값을 공유)
+const FIT = Math.min(1, (typeof window === 'undefined' ? 1200 : window.innerWidth) * 0.88 / 680);
+
 export function bookW() {
-  return 680;
+  return Math.round(680 * FIT);
 }
 
 // 680px = 책 높이 200mm 기준 3.4px/mm
 export function spineH(b) {
   const pages = parseInt(b.pages);
+  let px;
   if (pages) {
     const boardsMm = b.fm === '양장본' ? 5 : 3;
-    const mm = boardsMm + pages * 0.062;
-    return Math.max(44, Math.min(124, Math.round(mm * 3.4)));
+    px = Math.max(44, Math.min(124, Math.round((boardsMm + pages * 0.062) * 3.4)));
+  } else {
+    px = b.t.includes('키스 자렛') ? 96 : b.cat === 'poem' ? 48 : b.fm === '양장본' ? 78 : 62;
   }
-  if (b.t.includes('키스 자렛')) return 96;
-  if (b.cat === 'poem') return 48;
-  if (b.fm === '양장본') return 78;
-  return 62;
+  return Math.round(px * FIT);
 }
 
 // 공저는 "첫 저자 외", 역서는 원저자만
