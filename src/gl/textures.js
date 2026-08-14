@@ -2,11 +2,16 @@ import * as THREE from 'three';
 import { spineAuthor } from '../data.js';
 
 // 모바일 GPU 메모리 보호: 텍스처 해상도·이방성 필터를 낮춘다
-// 서가의 책은 작게 보이므로 낮은 해상도로 굽고, 상세로 열린 한 권만 고해상으로 다시 굽는다.
-// (32권 × 고해상 = iOS GPU 한계 초과 → 스크롤 중 강제 다운스케일)
+// 해상도 예산: 서가에서 눈이 머무는 곳은 책등이라 그쪽만 화면 픽셀에 맞추고,
+// 표지 윗면은 눕거나 꽂혀서 얇게 보이므로 낮게 굽는다. 상세로 열린 한 권만 전부 고해상.
+const SPINE_W = 1280;
 const SHELF_W = 640;
 const DETAIL_W = 1600;
-const ANISO = 16;
+let ANISO = 16;
+
+export function setMaxAnisotropy(n) {
+  ANISO = Math.max(1, Math.min(16, n));
+}
 
 function canvas(w, h) {
   const c = document.createElement('canvas');
@@ -43,7 +48,7 @@ function toTex(c) {
   return t;
 }
 
-export function spineTex(b, wPx, hPx, res = SHELF_W) {
+export function spineTex(b, wPx, hPx, res = SPINE_W) {
   const W = res, H = Math.max(64, Math.round(W * hPx / wPx));
   const [c, x] = canvas(W, H);
   const S = W / wPx;
@@ -105,7 +110,7 @@ export function spineTex(b, wPx, hPx, res = SHELF_W) {
 
 // 꽂힌 책등: 세로쓰기 — 한글이 위에서 아래로, 저자 아래, ΔT 맨 밑.
 // 면의 u축은 책 길이 방향이므로 세로 레이아웃을 따로 그려 90° 돌려 얹는다.
-export function spineVTex(b, wPx, hPx, res = SHELF_W) {
+export function spineVTex(b, wPx, hPx, res = SPINE_W) {
   const W = res, H = Math.max(64, Math.round(W * hPx / wPx));
   const [c, x] = canvas(W, H);
 

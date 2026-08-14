@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { BOOKS, CATS, MODE_BY_CAT, STAND_SCALE, bookW, spineH, coverSrc } from '../data.js';
 import { siteTime } from '../timedial.js';
-import { spineTex, spineVTex, coverFaceTex, coverBackTex, pagesTex, backTex, shadowTex } from './textures.js';
+import { spineTex, spineVTex, coverFaceTex, coverBackTex, pagesTex, backTex, shadowTex, setMaxAnisotropy } from './textures.js';
 
 const DEPTH_RATIO = 284 / 436;
 const FOV = 15;
@@ -124,7 +124,9 @@ export async function initGL() {
   const cv = renderer.domElement;
   cv.id = 'glcanvas';
   document.body.appendChild(cv);
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  // 3배 화면(아이폰)을 2배로 캡하면 WebGL만 흐려진다 — DOM 이미지와 나란히 두면 바로 보인다
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 3));
+  setMaxAnisotropy(renderer.capabilities.getMaxAnisotropy());
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(FOV, 1, 50, 40000);
@@ -192,8 +194,9 @@ export async function initGL() {
     const w = bookW(b), th = spineH(b), d = Math.round(w * DEPTH_RATIO);
     const mode = MODE_BY_CAT[b.cat];
     const material = map => new THREE.MeshLambertMaterial({ map, transparent: true, opacity: 0 });
-    // 표지 머리가 왼쪽으로 눕는다 — 세우면 바로 선다
-    const shelfCover = coverFaceTex(imgs[i], b, 3);
+    // 표지 머리가 왼쪽으로 눕는다 — 세우면 바로 선다.
+    // 진열대는 표지가 정면이라 고해상, 나머지는 얇게 보이므로 낮게
+    const shelfCover = coverFaceTex(imgs[i], b, 3, mode === 'display' ? 1024 : undefined);
     const shelfSpine = mode === 'shelf' ? spineVTex(b, w, th) : spineTex(b, w, th);
     const mats = [
       material(pagesTex(d / 90, th / 30)),
