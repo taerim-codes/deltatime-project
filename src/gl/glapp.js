@@ -231,14 +231,24 @@ export async function initGL() {
     };
   });
 
-  // 첫 렌더에서 전체 텍스처가 한꺼번에 GPU로 올라가며 얼어붙는 것을 방지 —
-  // 초기화 단계에서 몇 장씩 나눠 선업로드한다
+  // GPU 업로드 후 캔버스 백업 스토어를 반환한다. iOS Safari는 GPU 예산과 별개로
+  // 캔버스 메모리 한계가 있어, 캔버스를 붙들고 있으면 텍스처를 강등시켜 버린다.
+  function uploadAndFreeCanvas(tx) {
+    renderer.initTexture(tx);
+    const img = tx.image;
+    if (img instanceof HTMLCanvasElement) {
+      img.width = 1;
+      img.height = 1;
+    }
+  }
+
+  // 첫 렌더에서 전체 텍스처가 한꺼번에 올라가며 얼어붙는 것도 방지 — 몇 장씩 나눠 올린다
   async function warmupTextures() {
     const maps = new Set();
     for (const st of books) for (const m of st.mats) if (m.map) maps.add(m.map);
     const list = [...maps];
     for (let i = 0; i < list.length; i += 4) {
-      list.slice(i, i + 4).forEach(tx => renderer.initTexture(tx));
+      list.slice(i, i + 4).forEach(uploadAndFreeCanvas);
       // 숨김 탭은 타이머가 분 단위로 스로틀되므로 대기 없이 동기 업로드
       if (!document.hidden) await new Promise(r => setTimeout(r, 16));
     }
@@ -364,12 +374,14 @@ export async function initGL() {
     entry.cover = coverFaceTex(imgs[st.i], st.b, 3, 1600);
     st.mats[2].map = entry.cover;
     st.mats[2].needsUpdate = true;
+    uploadAndFreeCanvas(entry.cover);
 
     entry.spine = st.mode === 'shelf'
       ? spineVTex(st.b, st.w, st.th, 1600)
       : spineTex(st.b, st.w, st.th, 1600);
     st.mats[4].map = entry.spine;
     st.mats[4].needsUpdate = true;
+    uploadAndFreeCanvas(entry.spine);
 
     if (st.b.coverBack) {
       loadImg(st.b.coverBack).then(img => {
@@ -377,6 +389,7 @@ export async function initGL() {
         entry.back = coverBackTex(img, st.b);
         st.mats[3].map = entry.back;
         st.mats[3].needsUpdate = true;
+        uploadAndFreeCanvas(entry.back);
       });
     }
   }
