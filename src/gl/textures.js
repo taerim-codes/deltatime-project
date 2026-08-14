@@ -2,8 +2,10 @@ import * as THREE from 'three';
 import { spineAuthor } from '../data.js';
 
 // 모바일 GPU 메모리 보호: 텍스처 해상도·이방성 필터를 낮춘다
-const MOBILE = typeof window !== 'undefined' && Math.min(window.innerWidth, window.innerHeight) <= 820;
-const FACE_W = 1280;
+// 서가의 책은 작게 보이므로 낮은 해상도로 굽고, 상세로 열린 한 권만 고해상으로 다시 굽는다.
+// (32권 × 고해상 = iOS GPU 한계 초과 → 스크롤 중 강제 다운스케일)
+const SHELF_W = 640;
+const DETAIL_W = 1600;
 const ANISO = 16;
 
 function canvas(w, h) {
@@ -41,8 +43,8 @@ function toTex(c) {
   return t;
 }
 
-export function spineTex(b, wPx, hPx) {
-  const W = FACE_W, H = Math.max(64, Math.round(W * hPx / wPx));
+export function spineTex(b, wPx, hPx, res = SHELF_W) {
+  const W = res, H = Math.max(64, Math.round(W * hPx / wPx));
   const [c, x] = canvas(W, H);
   const S = W / wPx;
 
@@ -103,8 +105,8 @@ export function spineTex(b, wPx, hPx) {
 
 // 꽂힌 책등: 세로쓰기 — 한글이 위에서 아래로, 저자 아래, ΔT 맨 밑.
 // 면의 u축은 책 길이 방향이므로 세로 레이아웃을 따로 그려 90° 돌려 얹는다.
-export function spineVTex(b, wPx, hPx) {
-  const W = FACE_W, H = Math.max(64, Math.round(W * hPx / wPx));
+export function spineVTex(b, wPx, hPx, res = SHELF_W) {
+  const W = res, H = Math.max(64, Math.round(W * hPx / wPx));
   const [c, x] = canvas(W, H);
 
   x.fillStyle = b.spine;
@@ -167,8 +169,8 @@ export function spineVTex(b, wPx, hPx) {
 }
 
 // 소스 표지(~1200px)보다 크게 구워 다운샘플 모아레를 막고, 축소는 GPU 밉맵에 맡긴다.
-export function coverFaceTex(img, b, quarter) {
-  const W = FACE_W, H = Math.round(W * 284 / 436);
+export function coverFaceTex(img, b, quarter, res = SHELF_W) {
+  const W = res, H = Math.round(W * 284 / 436);
   const [c, x] = canvas(W, H);
 
   x.fillStyle = b.spine;
@@ -213,8 +215,8 @@ export function pagesTex(repX, repY) {
 }
 
 // 실제 뒷표지 — 표지면과 같은 면 좌표계, 뒤집었을 때 바로 서는 방향
-export function coverBackTex(img, b) {
-  const W = FACE_W, H = Math.round(W * 284 / 436);
+export function coverBackTex(img, b, res = DETAIL_W) {
+  const W = res, H = Math.round(W * 284 / 436);
   const [c, x] = canvas(W, H);
   x.fillStyle = b.spine;
   x.fillRect(0, 0, W, H);

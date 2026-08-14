@@ -192,13 +192,15 @@ export async function initGL() {
     const w = bookW(b), th = spineH(b), d = Math.round(w * DEPTH_RATIO);
     const mode = MODE_BY_CAT[b.cat];
     const material = map => new THREE.MeshLambertMaterial({ map, transparent: true, opacity: 0 });
+    // 표지 머리가 왼쪽으로 눕는다 — 세우면 바로 선다
+    const shelfCover = coverFaceTex(imgs[i], b, 3);
+    const shelfSpine = mode === 'shelf' ? spineVTex(b, w, th) : spineTex(b, w, th);
     const mats = [
       material(pagesTex(d / 90, th / 30)),
       material(pagesTex(d / 90, th / 30)),
-      material(coverFaceTex(imgs[i], b, 3)), // 표지 머리가 왼쪽으로 눕는다 — 세우면 바로 선다
-      material(sharedBackTex), // 실제 뒷표지는 책을 열 때 지연 로드
-
-      material(mode === 'shelf' ? spineVTex(b, w, th) : spineTex(b, w, th)),
+      material(shelfCover),
+      material(sharedBackTex), // 실제 뒷표지는 책을 열 때 고해상으로 로드
+      material(shelfSpine),
       material(pagesTex(w / 90, th / 30)),
     ];
     mats[2].color.setScalar(mode === 'display' ? 1 : COVER_TINT);
@@ -222,6 +224,7 @@ export async function initGL() {
 
     return {
       b, i, w, th, d, mode, restQuat, restScale, group, mesh, mats, shadow,
+      shelfCover, shelfSpine,
       cy: 0, x: 0,
       intro: 0, introT: 0, fade: 1, fadeT: 1, lift: 0, liftT: 0,
       detached: false,
@@ -335,20 +338,52 @@ export async function initGL() {
     drag.x = drag.y = drag.vx = drag.vy = 0;
   }
 
-  // 뒷표지는 상세에서 처음 열릴 때만 로드 — 32장을 미리 올리면 모바일이 죽는다
-  function ensureBackCover(st) {
-    if (st.backReady || !st.b.coverBack) return;
-    st.backReady = true;
-    loadImg(st.b.coverBack).then(img => {
-      if (!img) return;
-      st.mats[3].map = coverBackTex(img, st.b);
-      st.mats[3].needsUpdate = true;
-    });
+  // 서가는 저해상으로 유지하고, 열린 한 권만 고해상으로 승격한다.
+  // (32권 전부 고해상이면 iOS가 GPU 메모리 압박으로 텍스처를 강제 다운스케일한다)
+  let hires = null;
+
+  function releaseHires() {
+    if (!hires) return;
+    const { st, cover, back, spine } = hires;
+    st.mats[2].map = st.shelfCover;
+    st.mats[3].map = sharedBackTex;
+    st.mats[4].map = st.shelfSpine;
+    st.mats.forEach(m => { m.needsUpdate = true; });
+    cover?.dispose();
+    back?.dispose();
+    spine?.dispose();
+    hires = null;
+  }
+
+  function upgradeToHires(st) {
+    if (hires?.st === st) return;
+    releaseHires();
+    const entry = { st, cover: null, back: null, spine: null };
+    hires = entry;
+
+    entry.cover = coverFaceTex(imgs[st.i], st.b, 3, 1600);
+    st.mats[2].map = entry.cover;
+    st.mats[2].needsUpdate = true;
+
+    entry.spine = st.mode === 'shelf'
+      ? spineVTex(st.b, st.w, st.th, 1600)
+      : spineTex(st.b, st.w, st.th, 1600);
+    st.mats[4].map = entry.spine;
+    st.mats[4].needsUpdate = true;
+
+    if (st.b.coverBack) {
+      loadImg(st.b.coverBack).then(img => {
+        if (!img || hires !== entry) return;
+        entry.back = coverBackTex(img, st.b);
+        st.mats[3].map = entry.back;
+        st.mats[3].needsUpdate = true;
+      });
+    }
   }
 
   function open(i, done) {
     const st = books[i];
-    ensureBackCover(st);
+    upgradeToHires(st);
     mode = 'detail';
     active = st;
     flying = true;
@@ -405,6 +440,7 @@ export async function initGL() {
         st.detached = false;
         flying = false;
         shadowToRest(st);
+        releaseHires();
         books.forEach(o => { o.fadeT = 1; });
         mode = 'stack';
         active = null;
@@ -429,7 +465,7 @@ export async function initGL() {
       shadowToRest(prev);
     }
     active = st;
-    ensureBackCover(st);
+    upgradeToHires(st);
     flying = true;
     st.detached = true;
     st.intro = st.introT = 1;
